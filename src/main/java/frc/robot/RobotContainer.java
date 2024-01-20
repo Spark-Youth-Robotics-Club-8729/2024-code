@@ -32,10 +32,10 @@ import java.util.List;
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
-public class RobotContainer {
+public class RobotContainer{
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-
+  
   // The driver's controller
   Joystick m_driverController = new Joystick(OIConstants.kDriverControllerPort);
 
@@ -73,6 +73,10 @@ public class RobotContainer {
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
+  }
+
+  public void resetGyroCommand() {
+    m_robotDrive.m_gyro.zeroYaw();
   }
 
   /**
