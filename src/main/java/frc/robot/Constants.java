@@ -139,4 +139,13 @@ public final class Constants {
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }
-}
+
+  public static final class ShooterConstants {
+    //Constant CAN ID
+    public static final double ShooterLeftCanID = 9;
+    public static final double ShooterRightCanID = 10;
+    public static final IdleMode ShooterLeftIdleMode = IdleMode.kBrake;
+    public static final IdleMode ShooterRightIdleMode = IdleMode.kBrake;
+    public static final double ShooterMotorSpeed = 0.1;
+  }
+} 
