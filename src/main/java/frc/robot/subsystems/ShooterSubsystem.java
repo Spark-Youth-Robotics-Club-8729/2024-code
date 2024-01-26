@@ -9,8 +9,7 @@ import frc.robot.Constants.ShooterConstants;
 public class ShooterSubsystem extends SubsystemBase {
     CANSparkMax leftShooterWheel;
     CANSparkMax rightShooterWheel;
-
-
+    
     public ShooterSubsystem(int ShooterLeftCanID, int ShooterRightCanID) { //settings + configs
         // initializing shooter wheels
         leftShooterWheel = new CANSparkMax(ShooterLeftCanID, MotorType.kBrushless);
