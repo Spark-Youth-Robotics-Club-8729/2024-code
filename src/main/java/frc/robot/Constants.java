@@ -148,4 +148,11 @@ public final class Constants {
     public static final IdleMode ShooterRightIdleMode = IdleMode.kBrake;
     public static final double ShooterMotorSpeed = 0.1;
   }
+
+  public static final class IntakeConstants {
+    public static final double IntakeSpinMotorCanID = 11;
+    public static final double IntakeRotateMotorCanID = 12;
+    public static final double IntakeSpinMotorSpeed = 0.1;
+    public static final double IntakeRotateMotorSpeed = 0.1;
+  }
 } 
