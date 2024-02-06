@@ -39,7 +39,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 public class RobotContainer{
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  private final IntakeSubsystem m_robotIntake = new IntakeSubsystem(IntakeConstants.IntakeSpinMotorCanID, IntakeConstants.IntakeRotateMotorCanID);
+  private final IntakeSubsystem m_robotIntake = new IntakeSubsystem();
   
   // The driver's controller
   Joystick m_driverController = new Joystick(OIConstants.kDriverControllerPort);
