@@ -18,8 +18,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -37,10 +39,13 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 public class RobotContainer{
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final IntakeSubsystem m_robotIntake = new IntakeSubsystem(IntakeConstants.IntakeSpinMotorCanID, IntakeConstants.IntakeRotateMotorCanID);
   
   // The driver's controller
   Joystick m_driverController = new Joystick(OIConstants.kDriverControllerPort);
 
+  // The intake joystick
+  Joystick m_operatorController = new Joystick(OIConstants.kOperatorControllerPort);
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -59,6 +64,24 @@ public class RobotContainer{
                 -MathUtil.applyDeadband(m_driverController.getRawAxis(4), OIConstants.kDriveDeadband),
                 true, true),
             m_robotDrive));
+
+    m_robotIntake.setDefaultCommand(
+      // The left stick controls the speed of the intake.
+      // Up (Faster) and Down (Slower) is controlled by the Y axis of the left stick.
+      new RunCommand(
+        () -> m_robotIntake.setSpin(
+          -MathUtil.applyDeadband(m_operatorController.getRawAxis(1), OIConstants.kDriveDeadband)
+          ),
+      m_robotIntake));
+    
+    m_robotIntake.setDefaultCommand(
+      // The right stick controls the intake rotation of the robot.
+      // Left(Backwards) or Right(Forwards) is controlled by the X axis of the right stick.
+      new RunCommand(
+        () -> m_robotIntake.setRotate(
+          -MathUtil.applyDeadband(m_operatorController.getRawAxis(2), OIConstants.kDriveDeadband)
+        ),
+      m_robotIntake));
   }
 
   /**
