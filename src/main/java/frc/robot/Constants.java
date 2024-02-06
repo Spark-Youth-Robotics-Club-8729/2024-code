@@ -118,6 +118,7 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
     public static final double kDriveDeadband = 0.05;
   }
 
@@ -150,8 +151,8 @@ public final class Constants {
   }
 
   public static final class IntakeConstants {
-    public static final double IntakeSpinMotorCanID = 11;
-    public static final double IntakeRotateMotorCanID = 12;
+    public static final int IntakeSpinMotorCanID = 11;
+    public static final int IntakeRotateMotorCanID = 12;
     public static final double IntakeSpinMotorSpeed = 0.1;
     public static final double IntakeRotateMotorSpeed = 0.1;
   }
