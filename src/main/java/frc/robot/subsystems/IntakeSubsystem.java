@@ -10,9 +10,9 @@ public class IntakeSubsystem extends SubsystemBase {
     CANSparkMax IntakeSpinMotor;
     CANSparkMax IntakeRotateMotor;
 
-    public IntakeSubsystem(int IntakeSpinMotorCanID, int IntakeRotateMotorCanID) {
-        IntakeSpinMotor = new CANSparkMax(IntakeSpinMotorCanID, MotorType.kBrushless);
-        IntakeRotateMotor = new CANSparkMax(IntakeRotateMotorCanID, MotorType.kBrushless);
+    public IntakeSubsystem() {
+        IntakeSpinMotor = new CANSparkMax(IntakeConstants.IntakeSpinMotorCanID, MotorType.kBrushless);
+        IntakeRotateMotor = new CANSparkMax(IntakeConstants.IntakeRotateMotorCanID, MotorType.kBrushless);
     }
 
     public void setSpin(double speed) {
