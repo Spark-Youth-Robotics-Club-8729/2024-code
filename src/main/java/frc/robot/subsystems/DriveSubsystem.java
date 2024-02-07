@@ -190,7 +190,7 @@ public class DriveSubsystem extends SubsystemBase {
           m_currentTranslationMag = m_magLimiter.calculate(inputTranslationMag);
         }
       }
-      else {
+      else { 
         m_currentTranslationDir = SwerveUtils.StepTowardsCircular(m_currentTranslationDir, inputTranslationDir, directionSlewRate * elapsedTime);
         m_currentTranslationMag = m_magLimiter.calculate(0.0);
       }

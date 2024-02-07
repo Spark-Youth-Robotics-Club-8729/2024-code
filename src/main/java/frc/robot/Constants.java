@@ -155,5 +155,12 @@ public final class Constants {
     public static final int IntakeRotateMotorCanID = 12;
     public static final double IntakeSpinMotorSpeed = 0.1;
     public static final double IntakeRotateMotorSpeed = 0.1;
+
+    // intake rotation stuff (amp)
+    public static final double kP = 0.1;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
+    public static final double PIDSetpoint = 2.83;
+    public static final double stall = -0.1;
   }
 } 
