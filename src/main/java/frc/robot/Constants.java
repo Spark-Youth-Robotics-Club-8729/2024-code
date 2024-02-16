@@ -163,4 +163,9 @@ public final class Constants {
     public static final double PIDSetpoint = 2.83;
     public static final double stall = -0.1;
   }
+
+  public static final class ClimbConstants {
+    public static final int ClimbSpinMotorCanID = 13;
+    public static final double ClimbSpinMotorSpeed = 0.1;
+  }
 } 
