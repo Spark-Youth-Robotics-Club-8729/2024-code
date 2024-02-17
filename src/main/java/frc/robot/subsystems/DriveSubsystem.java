@@ -45,7 +45,6 @@ import frc.robot.Constants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Robot;
-import frc.robot.Vision;
 import frc.utils.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -72,8 +71,6 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.kBackRightChassisAngularOffset);
 
   private Vision m_vision = new Vision();
-  
-
 
   // The gyro sensor
   public final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
@@ -131,21 +128,21 @@ public class DriveSubsystem extends SubsystemBase {
           }
           return false;
         },
-        
+
         this // Reference to this subsystem to set requirements
     );
     var stateStdDevs = VecBuilder.fill(0.1, 0.1, 0.1);
     var visionStdDevs = VecBuilder.fill(1, 1, 1);
     m_odometry = new SwerveDrivePoseEstimator(
-      DriveConstants.kDriveKinematics,
-      Rotation2d.fromDegrees(-m_gyro.getYaw()),
-      new SwerveModulePosition[] {
-          m_frontLeft.getPosition(),
-          m_frontRight.getPosition(),
-          m_rearLeft.getPosition(),
-          m_rearLeft.getPosition()
-      }, new Pose2d(), stateStdDevs,
-      visionStdDevs);
+        DriveConstants.kDriveKinematics,
+        Rotation2d.fromDegrees(-m_gyro.getYaw()),
+        new SwerveModulePosition[] {
+            m_frontLeft.getPosition(),
+            m_frontRight.getPosition(),
+            m_rearLeft.getPosition(),
+            m_rearLeft.getPosition()
+        }, new Pose2d(), stateStdDevs,
+        visionStdDevs);
   }
 
   @Override
@@ -159,18 +156,18 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
-      
+
     // Correct pose estimate with vision measurements
     var visionEst = m_vision.getEstimatedGlobalPose();
     visionEst.ifPresent(
-            est -> {
-                var estPose = est.estimatedPose.toPose2d();
-                // Change our trust in the measurement based on the tags we can see
-                var estStdDevs = m_vision.getEstimationStdDevs(estPose);
+        est -> {
+          var estPose = est.estimatedPose.toPose2d();
+          // Change our trust in the measurement based on the tags we can see
+          var estStdDevs = m_vision.getEstimationStdDevs(estPose);
 
-                m_odometry.addVisionMeasurement(
-                        est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
-            });
+          m_odometry.addVisionMeasurement(
+              est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+        });
 
     SmartDashboard.putNumber("Yaw", -m_gyro.getYaw());
   }

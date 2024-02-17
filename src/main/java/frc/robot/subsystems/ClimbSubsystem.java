@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants.ClimbConstants;
@@ -12,10 +11,10 @@ public class ClimbSubsystem extends SubsystemBase {
 
     public ClimbSubsystem() {
         ClimbSpinMotor = new CANSparkMax(ClimbConstants.ClimbSpinMotorCanID, MotorType.kBrushless);
-        
-    }  
-    
-    public void setSpin(double speed){
+
+    }
+
+    public void setSpin(double speed) {
         ClimbSpinMotor.set(speed);
     }
 
