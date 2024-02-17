@@ -47,7 +47,6 @@ public class RobotContainer {
     private final DriveSubsystem m_robotDrive = new DriveSubsystem();
     private final IntakeSubsystem m_robotIntake = new IntakeSubsystem();
     private final ClimbSubsystem m_robotClimb = new ClimbSubsystem();
-
     // The driver's controller
     Joystick m_driverController = new Joystick(OIConstants.kDriverControllerPort);
 
@@ -135,7 +134,6 @@ public class RobotContainer {
     public void resetGyroCommand() {
         m_robotDrive.m_gyro.zeroYaw();
     }
-
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
      *
