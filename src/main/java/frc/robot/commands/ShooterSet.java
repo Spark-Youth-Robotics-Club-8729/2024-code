@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShooterSet extends Command {
-  ShooterSubsystem shooterSubsystem;
-  double speed;
+  ShooterSubsystem m_shooterSubsystem;
+  double m_speed;
   /** Creates a new ShooterSet. */
   public ShooterSet(ShooterSubsystem shooterSubsystem, double speed) {
-    this.shooterSubsystem = shooterSubsystem;
-    this.speed = speed;
+    m_shooterSubsystem = shooterSubsystem;
+    m_speed = speed;
     addRequirements(shooterSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -25,13 +25,13 @@ public class ShooterSet extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooterSubsystem.setShooter(speed);
+    m_shooterSubsystem.setShooter(m_speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooterSubsystem.setShooter(0.0);
+    m_shooterSubsystem.setShooter(0.0);
   }
 
   // Returns true when the command should end.

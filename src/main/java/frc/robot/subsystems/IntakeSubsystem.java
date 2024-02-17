@@ -83,6 +83,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void setSpin(double speed) {
+        System.out.println("hi intake speed: " + speed);
         IntakeSpinMotor.set(speed);
     }
 

@@ -31,6 +31,7 @@ import frc.robot.commands.ClimberSet;
 import frc.robot.commands.IntakeSetRotation;
 import frc.robot.commands.IntakeSetSpin;
 import frc.robot.commands.ShooterSet;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -52,13 +53,12 @@ public class RobotContainer {
         private final IntakeSubsystem m_robotIntake = new IntakeSubsystem();
         private final ClimbSubsystem m_robotClimb = new ClimbSubsystem();
         private final ShooterSubsystem m_robotShooter = new ShooterSubsystem();
-        
 
         // The driver's controller
-        Joystick m_driverController = new Joystick(OIConstants.kDriverControllerPort);
+        CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
         // The intake joystick
-        Joystick m_operatorController = new Joystick(OIConstants.kOperatorControllerPort);
+        CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
 
         /**
          * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -102,26 +102,31 @@ public class RobotContainer {
          * {@link JoystickButton}.
          */
         private void configureButtonBindings() {
-                new JoystickButton(m_driverController, Button.kR1.value)
+                m_driverController.rightBumper()
                                 .whileTrue(new RunCommand(
                                                 () -> m_robotDrive.setX(),
                                                 m_robotDrive));
-                new JoystickButton(m_operatorController, 9).whileTrue(
-                new ClimberSet(m_robotClimb, m_operatorController.getRawAxis(1)));
-                new JoystickButton(m_operatorController, 2)
-                                .whileTrue(new IntakeSetSpin(m_robotIntake,0.8));
-                new JoystickButton(m_operatorController, 3)
-                                .whileTrue(new IntakeSetSpin(m_robotIntake,-0.8));
+                m_driverController.y().onTrue(new RunCommand(() -> m_robotDrive.m_gyro.zeroYaw(), m_robotDrive));
+                                                
+                // new JoystickButton(m_operatorController, 9).whileTrue(
+                //         new RunCommand(() -> m_robotClimb.setSpin(m_operatorController.getRawAxis(1)), m_robotClimb));
+                m_operatorController.axisGreaterThan(1, 0.2).whileTrue(new ClimberSet(m_robotClimb, m_operatorController.getLeftY()));
+                m_operatorController.axisLessThan(1, -0.2).whileTrue(new ClimberSet(m_robotClimb, m_operatorController.getLeftY()));
+                m_operatorController.b().whileTrue(new IntakeSetSpin(m_robotIntake,0.4));
+                m_operatorController.x().whileTrue(new IntakeSetSpin(m_robotIntake,-0.8));
+                m_operatorController.rightBumper().whileTrue(new ShooterSet(m_robotShooter, 0.8));
+                m_operatorController.leftBumper().whileTrue(new ShooterSet(m_robotShooter, -0.5));
+                m_operatorController.rightTrigger().whileTrue(new ShooterSet(m_robotShooter, 0.3));
 
-                new JoystickButton(m_operatorController, 1)
-                                .whileTrue(new IntakeSetRotation(m_robotIntake, 0.5));
-                new JoystickButton(m_operatorController, 4)
-                                .whileTrue(new IntakeSetRotation(m_robotIntake, -0.5));
+                // new JoystickButton(m_operatorController, 1)
+                //                 .whileTrue(new IntakeSetRotation(m_robotIntake, 0.5));
+                // new JoystickButton(m_operatorController, 4)
+                //                 .whileTrue(new IntakeSetRotation(m_robotIntake, -0.5));
 
-                new JoystickButton(m_operatorController, 7)
-                                .whileTrue(new ShooterSet(m_robotShooter, 0.5));
-                new JoystickButton(m_operatorController, 8)
-                                .whileTrue(new ShooterSet(m_robotShooter, -0.5));
+                // new JoystickButton(m_operatorController, 7)
+                //                 .whileTrue(new ShooterSet(m_robotShooter, 0.5));
+                // new JoystickButton(m_operatorController, 8)
+                //                 .whileTrue(new ShooterSet(m_robotShooter, -0.5));
                 // new JoystickButton(m_driverController, 1)
                 //                 .whileTrue(m_robotIntake.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
 
