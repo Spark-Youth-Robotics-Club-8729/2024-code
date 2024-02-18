@@ -10,6 +10,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class IntakeSetSpin extends Command {
   private final IntakeSubsystem m_intakesubsystem;
   private final double m_speed;
+
   /** Creates a new IntakeSet. */
   public IntakeSetSpin(IntakeSubsystem intakesubsystem, double speed) {
     m_speed = speed;

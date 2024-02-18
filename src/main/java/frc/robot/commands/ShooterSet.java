@@ -10,6 +10,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class ShooterSet extends Command {
   ShooterSubsystem m_shooterSubsystem;
   double m_speed;
+
   /** Creates a new ShooterSet. */
   public ShooterSet(ShooterSubsystem shooterSubsystem, double speed) {
     m_shooterSubsystem = shooterSubsystem;
@@ -20,7 +21,8 @@ public class ShooterSet extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

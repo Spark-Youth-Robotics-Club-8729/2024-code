@@ -8,30 +8,32 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimbSubsystem;
 
 public class ClimberSet extends Command {
-  ClimbSubsystem climbersubsystem;
-  double speed;
+  private final ClimbSubsystem m_climbersubsystem;
+  private final double m_speed;
+
   /** Creates a new ClimberSet. */
   public ClimberSet(ClimbSubsystem climbersubsystem, double speed) {
-    this.speed = speed;
-    this.climbersubsystem = climbersubsystem;
+    m_speed = speed;
+    m_climbersubsystem = climbersubsystem;
     addRequirements(climbersubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_climbersubsystem.setSpin(m_speed);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climbersubsystem.setSpin(speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    climbersubsystem.setSpin(0.0);
+    m_climbersubsystem.setSpin(0.0);
   }
 
   // Returns true when the command should end.

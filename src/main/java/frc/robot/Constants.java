@@ -36,7 +36,7 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 3.0;
+    public static final double kMaxSpeedMetersPerSecond = 2.0;
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
 
     public static final double kDirectionSlewRate = 1.2; // radians per second
@@ -70,7 +70,6 @@ public final class Constants {
     public static final int kRearLeftTurningCanId = 1;
     public static final int kFrontRightTurningCanId = 3;
     public static final int kRearRightTurningCanId = 2;
-
 
     public static final boolean kGyroReversed = true;
   }
@@ -179,6 +178,7 @@ public final class Constants {
     public static final IdleMode ShooterLeftIdleMode = IdleMode.kBrake;
     public static final IdleMode ShooterRightIdleMode = IdleMode.kBrake;
     public static final double ShooterMotorSpeed = 0.1;
+    public static final int ShooterDesiredRPM = 5100;
   }
 
   public static final class IntakeConstants {

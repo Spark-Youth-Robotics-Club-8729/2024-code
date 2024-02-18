@@ -34,11 +34,15 @@ import frc.robot.commands.ShooterSet;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.commands.AutoShot;
+import frc.robot.commands.AutoIntake;
+import frc.robot.commands.AutoRotate;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.List;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 /*
@@ -54,6 +58,8 @@ public class RobotContainer {
         private final ClimbSubsystem m_robotClimb = new ClimbSubsystem();
         private final ShooterSubsystem m_robotShooter = new ShooterSubsystem();
 
+
+
         // The driver's controller
         CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
@@ -64,6 +70,11 @@ public class RobotContainer {
          * The container for the robot. Contains subsystems, OI devices, and commands.
          */
         public RobotContainer() {
+                NamedCommands.registerCommand("AutoShot", new AutoShot(m_robotShooter, m_robotIntake));
+                NamedCommands.registerCommand("AutoIntake", new AutoIntake(m_robotIntake));
+                NamedCommands.registerCommand("AutoRotate", new AutoRotate(m_robotIntake));
+
+                
                 // Configure the button bindings
                 configureButtonBindings();
 
@@ -84,19 +95,14 @@ public class RobotContainer {
                                                                                 OIConstants.kDriveDeadband),
                                                                 true, true),
                                                 m_robotDrive));
-                
-                
 
-                
-
-                
         }
 
         /**
          * Use this method to define your button->command mappings. Buttons can be
          * created by
          * instantiating a {@link edu.wpi.first.wpilibj.GenericHID} or one of its
-         * subclasses ({@link
+         * subclasses ({@link   
          * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling
          * passing it to a
          * {@link JoystickButton}.
@@ -106,38 +112,41 @@ public class RobotContainer {
                                 .whileTrue(new RunCommand(
                                                 () -> m_robotDrive.setX(),
                                                 m_robotDrive));
-                m_driverController.y().onTrue(new RunCommand(() -> m_robotDrive.m_gyro.zeroYaw(), m_robotDrive));
-                                                
+                m_driverController.y().whileTrue(new RunCommand(() -> m_robotDrive.m_gyro.zeroYaw(), m_robotDrive));
+
                 // new JoystickButton(m_operatorController, 9).whileTrue(
-                //         new RunCommand(() -> m_robotClimb.setSpin(m_operatorController.getRawAxis(1)), m_robotClimb));
-                m_operatorController.axisGreaterThan(1, 0.2).whileTrue(new ClimberSet(m_robotClimb, m_operatorController.getLeftY()));
-                m_operatorController.axisLessThan(1, -0.2).whileTrue(new ClimberSet(m_robotClimb, m_operatorController.getLeftY()));
-                m_operatorController.b().whileTrue(new IntakeSetSpin(m_robotIntake,0.4));
-                m_operatorController.x().whileTrue(new IntakeSetSpin(m_robotIntake,-0.8));
-                m_operatorController.rightBumper().whileTrue(new ShooterSet(m_robotShooter, 0.8));
+                // new RunCommand(() ->
+                // m_robotClimb.setSpin(m_operatorController.getRawAxis(1)), m_robotClimb));
+                m_operatorController.leftTrigger()
+                                .whileTrue(new ClimberSet(m_robotClimb, m_operatorController.getLeftY()));
+                m_operatorController.b().whileTrue(new IntakeSetSpin(m_robotIntake, 0.6));
+                m_operatorController.x().whileTrue(new IntakeSetSpin(m_robotIntake, -0.8));
+                m_operatorController.rightBumper().whileTrue(new ShooterSet(m_robotShooter, 0.9));
                 m_operatorController.leftBumper().whileTrue(new ShooterSet(m_robotShooter, -0.5));
-                m_operatorController.rightTrigger().whileTrue(new ShooterSet(m_robotShooter, 0.3));
+                m_operatorController.rightTrigger().whileTrue(new ShooterSet(m_robotShooter, 0.5));
+                m_operatorController.y().whileTrue(new IntakeSetRotation(m_robotIntake, 0.3));
+                m_operatorController.a().whileTrue(new IntakeSetRotation(m_robotIntake, -0.3));
 
                 // new JoystickButton(m_operatorController, 1)
-                //                 .whileTrue(new IntakeSetRotation(m_robotIntake, 0.5));
+                // .whileTrue(new IntakeSetRotation(m_robotIntake, 0.5));
                 // new JoystickButton(m_operatorController, 4)
-                //                 .whileTrue(new IntakeSetRotation(m_robotIntake, -0.5));
+                // .whileTrue(new IntakeSetRotation(m_robotIntake, -0.5));
 
                 // new JoystickButton(m_operatorController, 7)
-                //                 .whileTrue(new ShooterSet(m_robotShooter, 0.5));
+                // .whileTrue(new ShooterSet(m_robotShooter, 0.5));
                 // new JoystickButton(m_operatorController, 8)
-                //                 .whileTrue(new ShooterSet(m_robotShooter, -0.5));
+                // .whileTrue(new ShooterSet(m_robotShooter, -0.5));
                 // new JoystickButton(m_driverController, 1)
-                //                 .whileTrue(m_robotIntake.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+                // .whileTrue(m_robotIntake.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
 
                 // new JoystickButton(m_driverController, 2)
-                //                 .whileTrue(m_robotIntake.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+                // .whileTrue(m_robotIntake.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
 
                 // new JoystickButton(m_driverController, 3)
-                //                 .whileTrue(m_robotIntake.sysIdDynamic(SysIdRoutine.Direction.kForward));
+                // .whileTrue(m_robotIntake.sysIdDynamic(SysIdRoutine.Direction.kForward));
 
                 // new JoystickButton(m_driverController, 4)
-                //                 .whileTrue(m_robotIntake.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+                // .whileTrue(m_robotIntake.sysIdDynamic(SysIdRoutine.Direction.kReverse));
         }
 
         public void resetGyroCommand() {
@@ -150,7 +159,7 @@ public class RobotContainer {
          * @return the command to run in autonomous
          */
         public Command getAutonomousCommand() {
-                return new PathPlannerAuto("New New Auto");
+                return new PathPlannerAuto("MidShotNoteShot");
                 // // Create config for trajectory
                 // TrajectoryConfig config = new TrajectoryConfig(
                 // AutoConstants.kMaxSpeedMetersPerSecond,
