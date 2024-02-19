@@ -199,4 +199,9 @@ public final class Constants {
     public static final int ClimbSpinMotorCanID = 13;
     public static final double ClimbSpinMotorSpeed = 0.1;
   }
+
+  public static final class AdvantageConstants{
+    /** Environment variable to toggle robot replay */
+    public static final String REPLAY_ENVIRONMENT_VAR = "ROBOT_REPLAY";
+  }
 }

@@ -23,6 +23,7 @@ import static edu.wpi.first.units.MutableMeasure.mutable;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Volts;
+import org.littletonrobotics.junction.Logger;
 
 public class IntakeSubsystem extends SubsystemBase {
     CANSparkMax IntakeSpinMotor;
@@ -52,6 +53,10 @@ public class IntakeSubsystem extends SubsystemBase {
     // Mutable holder for unit-safe linear velocity values, persisted to avoid
     // reallocation.
     private final MutableMeasure<Velocity<Distance>> m_velocity = mutable(MetersPerSecond.of(0));
+    private final String INTAKE_SPIN_LOG_PATH = "/Spin";
+    private final String INTAKE_ROTATION_LOG_PATH = "/Rotation/Speed";
+    private final String INTAKE_ROTATION_ENCODER_LOG_PATH = "/Rotation/Encoder";
+    private final String INTAKE_ROTATION_PID_LOG_PATH = "/Rotation/PIDSpeeds";
 
     SysIdRoutine routine = new SysIdRoutine(
             new SysIdRoutine.Config(),
@@ -91,6 +96,7 @@ public class IntakeSubsystem extends SubsystemBase {
         IntakeRotateMotor.set(speed);
     }
 
+    
     public void rotatePID() {
         IntakeRotateMotor.set(rotationPID.calculate(IntakeConstants.PIDSetpoint, IntakeRotateEncoder.getPosition()));
     }
@@ -99,6 +105,7 @@ public class IntakeSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Rotation Encoder", IntakeRotateEncoder.getPosition());
         SmartDashboard.putNumber("Rotation PID Speed",
                 rotationPID.calculate(IntakeConstants.PIDSetpoint, IntakeRotateEncoder.getPosition()));
+        logOutputs();
     }
 
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
@@ -112,5 +119,25 @@ public class IntakeSubsystem extends SubsystemBase {
      */
     public Command sysIdDynamic(SysIdRoutine.Direction direction) {
         return routine.dynamic(direction);
+    }
+
+    /// Log IntakeSubsystem Outputs
+    private void logOutputs() {
+    Logger.recordOutput(getName() + INTAKE_SPIN_LOG_PATH, getSpin());
+    Logger.recordOutput(getName() + INTAKE_ROTATION_LOG_PATH, getRotation());
+    Logger.recordOutput(getName() + INTAKE_ROTATION_ENCODER_LOG_PATH, getRotationEncoder());
+    Logger.recordOutput(getName() + INTAKE_ROTATION_PID_LOG_PATH, rotationPID.calculate(IntakeConstants.PIDSetpoint, IntakeRotateEncoder.getPosition()));
+    }
+
+    public double getSpin(){
+        return IntakeSpinMotor.get();
+    }
+
+    public double getRotation(){
+        return IntakeRotateMotor.get();
+    }
+
+    public double getRotationEncoder(){
+        return IntakeRotateEncoder.getPosition();
     }
 }

@@ -8,6 +8,14 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
+import frc.robot.Constants.AdvantageConstants;
+import org.littletonrobotics.junction.LogFileUtil;
+import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
+import org.littletonrobotics.junction.wpilog.WPILOGReader;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to
@@ -17,7 +25,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
@@ -29,6 +37,41 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+
+    // AdvantageKit Logging
+    //BatteryTracker batteryTracker = new BatteryTracker(BatteryTracker.initializeHardware());
+    if(isReal())
+    Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
+    else
+    Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME+"_sim");
+    Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
+    Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
+    Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
+    Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
+    //Logger.recordMetadata("BatteryName", batteryTracker.scanBattery());
+
+    if(isReal()) {
+      // If robot is real, log to USB drive and publish data to NetworkTables
+      Logger.addDataReceiver(new WPILOGWriter("/AdvantageLogs/"));
+      Logger.addDataReceiver(new NT4Publisher());
+    }
+    else { // simulation or log replay - publish to NetworkTables for simulation or replay log file if var is set
+      String replay = System.getenv(AdvantageConstants.REPLAY_ENVIRONMENT_VAR);
+      if (replay == null || replay.isBlank()) Logger.addDataReceiver(new NT4Publisher());
+      else {
+        // Run as fast as possible
+        setUseTiming(false);
+        // Pull the replay log from AdvantageScope (or prompt the user)
+        String logPath = LogFileUtil.findReplayLog();
+        // Read replay log
+        Logger.setReplaySource(new WPILOGReader(logPath));
+        // Save outputs to a new log
+        Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
+      }
+    }
+
+    // Start logging! No more data receivers, replay sources, or metadata values may be added.
+    Logger.start();
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard.
