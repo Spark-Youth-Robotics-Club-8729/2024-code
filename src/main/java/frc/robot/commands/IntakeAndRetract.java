@@ -30,11 +30,10 @@ public class IntakeAndRetract extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(m_intakesubsystem.getRotationEncoder() < IntakeConstants.rotationOut){
+    if (m_intakesubsystem.getRotationEncoder() < IntakeConstants.rotationOut) {
       m_intakesubsystem.setRotate(m_rotationSpeed);
-      //System.out.println("INTAKE OUT");
-    }
-    else{
+      // System.out.println("INTAKE OUT");
+    } else {
       m_intakesubsystem.setRotate(0.0);
       m_intakesubsystem.setSpin(m_intakeSpeed);
     }
@@ -43,10 +42,9 @@ public class IntakeAndRetract extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if(m_intakesubsystem.getRotationEncoder() > IntakeConstants.rotationIn){
+    if (m_intakesubsystem.getRotationEncoder() > IntakeConstants.rotationIn) {
       m_intakesubsystem.setRotate(-m_rotationSpeed);
-    }
-    else{
+    } else {
       m_intakesubsystem.setRotate(0.0);
     }
 

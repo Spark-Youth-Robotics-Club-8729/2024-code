@@ -62,8 +62,6 @@ public class RobotContainer {
 
         private static SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
-
-
         // The driver's controller
         CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
@@ -78,7 +76,6 @@ public class RobotContainer {
                 NamedCommands.registerCommand("AutoIntake", new AutoIntake(m_robotIntake));
                 NamedCommands.registerCommand("AutoRotate", new AutoRotate(m_robotIntake));
 
-                
                 // Configure the button bindings
                 configureButtonBindings();
 
@@ -90,7 +87,7 @@ public class RobotContainer {
                 SmartDashboard.putData(m_robotIntake);
                 SmartDashboard.putData(m_robotShooter);
                 SmartDashboard.putData(m_robotClimb);
-                
+
                 // Configure default commands
                 m_robotDrive.setDefaultCommand(
                                 // The left stick controls translation of the robot.
@@ -115,7 +112,7 @@ public class RobotContainer {
          * Use this method to define your button->command mappings. Buttons can be
          * created by
          * instantiating a {@link edu.wpi.first.wpilibj.GenericHID} or one of its
-         * subclasses ({@link   
+         * subclasses ({@link
          * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling
          * passing it to a
          * {@link JoystickButton}.
@@ -132,18 +129,19 @@ public class RobotContainer {
                                                 () -> m_robotDrive.drive(
                                                                 -MathUtil.applyDeadband(
                                                                                 m_driverController.getRawAxis(1),
-                                                                                OIConstants.kDriveDeadband)*0.4,
+                                                                                OIConstants.kDriveDeadband) * 0.4,
                                                                 -MathUtil.applyDeadband(
                                                                                 m_driverController.getRawAxis(0),
-                                                                                OIConstants.kDriveDeadband)*0.4,
+                                                                                OIConstants.kDriveDeadband) * 0.4,
                                                                 -MathUtil.applyDeadband(
                                                                                 m_driverController.getRawAxis(4),
-                                                                                OIConstants.kDriveDeadband)*0.4,
+                                                                                OIConstants.kDriveDeadband) * 0.4,
                                                                 true, true),
                                                 m_robotDrive));
 
                 m_driverController.axisGreaterThan(6, 0.7)
-                                .whileTrue(new IntakeAndRetract(m_robotIntake, -0.4, -0.8)); // rot out speed, intake speed
+                                .whileTrue(new IntakeAndRetract(m_robotIntake, -0.4, -0.8)); // rot out speed, intake
+                                                                                             // speed
 
                 // new JoystickButton(m_operatorController, 9).whileTrue(
                 // new RunCommand(() ->
@@ -188,10 +186,11 @@ public class RobotContainer {
          * Add auto sequences to chooser
          */
         private void autoChooser() {
-        m_autoChooser.setDefaultOption("Mid + Amp side 3 note auto", new PathPlannerAuto("MidShotNoteShot"));
-        //m_autoChooser.addOption("4 Note Auto 1", new PathPlannerAuto("4 Note Auto 1"));
+                m_autoChooser.setDefaultOption("Mid + Amp side 3 note auto", new PathPlannerAuto("MidShotNoteShot"));
+                // m_autoChooser.addOption("4 Note Auto 1", new PathPlannerAuto("4 Note Auto
+                // 1"));
 
-        SmartDashboard.putData("Auto Chooser", m_autoChooser);
+                SmartDashboard.putData("Auto Chooser", m_autoChooser);
         }
 
         /**
