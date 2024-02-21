@@ -57,9 +57,9 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void periodic() {
-        SmartDashboard.putNumber("Left Velocity PID Speed", ShooterConstants.ShooterDesiredRPM / 5676
+        SmartDashboard.putNumber("Left Wheel Velocity PID Speed", ShooterConstants.ShooterDesiredRPM / 5676
                 + shooterLeftPID.calculate(leftShooterWheelEncoder.getVelocity(), ShooterConstants.ShooterDesiredRPM));
-        SmartDashboard.putNumber("Right Velocity PID Speed", ShooterConstants.ShooterDesiredRPM / 5676 + shooterRightPID
+        SmartDashboard.putNumber("Right Wheel Velocity PID Speed", ShooterConstants.ShooterDesiredRPM / 5676 + shooterRightPID
                 .calculate(rightShooterWheelEncoder.getVelocity(), ShooterConstants.ShooterDesiredRPM));
         logOutputs();
     }

@@ -27,6 +27,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.ClimberSet;
 import frc.robot.commands.IntakeSetRotation;
 import frc.robot.commands.IntakeSetSpin;
@@ -37,6 +38,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.AutoShot;
 import frc.robot.commands.AutoIntake;
 import frc.robot.commands.AutoRotate;
+import frc.robot.commands.IntakeAndRetract;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -58,6 +60,8 @@ public class RobotContainer {
         private final ClimbSubsystem m_robotClimb = new ClimbSubsystem();
         private final ShooterSubsystem m_robotShooter = new ShooterSubsystem();
 
+        private static SendableChooser<Command> m_autoChooser = new SendableChooser<>();
+
 
 
         // The driver's controller
@@ -78,6 +82,15 @@ public class RobotContainer {
                 // Configure the button bindings
                 configureButtonBindings();
 
+                // Configure autochooser
+                autoChooser();
+
+                // Smartdashboard subsystem data
+                SmartDashboard.putData(m_robotDrive);
+                SmartDashboard.putData(m_robotIntake);
+                SmartDashboard.putData(m_robotShooter);
+                SmartDashboard.putData(m_robotClimb);
+                
                 // Configure default commands
                 m_robotDrive.setDefaultCommand(
                                 // The left stick controls translation of the robot.
@@ -113,6 +126,24 @@ public class RobotContainer {
                                                 () -> m_robotDrive.setX(),
                                                 m_robotDrive));
                 m_driverController.y().whileTrue(new RunCommand(() -> m_robotDrive.m_gyro.zeroYaw(), m_robotDrive));
+
+                m_driverController.axisGreaterThan(3, 0.2)
+                                .whileTrue(new RunCommand(
+                                                () -> m_robotDrive.drive(
+                                                                -MathUtil.applyDeadband(
+                                                                                m_driverController.getRawAxis(1),
+                                                                                OIConstants.kDriveDeadband)*0.4,
+                                                                -MathUtil.applyDeadband(
+                                                                                m_driverController.getRawAxis(0),
+                                                                                OIConstants.kDriveDeadband)*0.4,
+                                                                -MathUtil.applyDeadband(
+                                                                                m_driverController.getRawAxis(4),
+                                                                                OIConstants.kDriveDeadband)*0.4,
+                                                                true, true),
+                                                m_robotDrive));
+
+                m_driverController.axisGreaterThan(6, 0.7)
+                                .whileTrue(new IntakeAndRetract(m_robotIntake, -0.4, -0.8)); // rot out speed, intake speed
 
                 // new JoystickButton(m_operatorController, 9).whileTrue(
                 // new RunCommand(() ->
@@ -154,12 +185,22 @@ public class RobotContainer {
         }
 
         /**
+         * Add auto sequences to chooser
+         */
+        private void autoChooser() {
+        m_autoChooser.setDefaultOption("Mid + Amp side 3 note auto", new PathPlannerAuto("MidShotNoteShot"));
+        //m_autoChooser.addOption("4 Note Auto 1", new PathPlannerAuto("4 Note Auto 1"));
+
+        SmartDashboard.putData("Auto Chooser", m_autoChooser);
+        }
+
+        /**
          * Use this to pass the autonomous command to the main {@link Robot} class.
          *
          * @return the command to run in autonomous
          */
         public Command getAutonomousCommand() {
-                return new PathPlannerAuto("MidShotNoteShot");
+                return m_autoChooser.getSelected();
                 // // Create config for trajectory
                 // TrajectoryConfig config = new TrajectoryConfig(
                 // AutoConstants.kMaxSpeedMetersPerSecond,

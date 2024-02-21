@@ -102,7 +102,9 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void periodic() {
-        SmartDashboard.putNumber("Rotation Encoder", IntakeRotateEncoder.getPosition());
+        SmartDashboard.putNumber("Rotation Encoder", getRotationEncoder());
+        SmartDashboard.putNumber("Current Rotation Speed", getRotation());
+        SmartDashboard.putNumber("Current Intake Speed", getSpin());
         SmartDashboard.putNumber("Rotation PID Speed",
                 rotationPID.calculate(IntakeConstants.PIDSetpoint, IntakeRotateEncoder.getPosition()));
         logOutputs();
@@ -138,6 +140,6 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public double getRotationEncoder(){
-        return IntakeRotateEncoder.getPosition();
+        return 1;
     }
 }
