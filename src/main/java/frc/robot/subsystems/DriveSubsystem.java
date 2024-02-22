@@ -12,6 +12,9 @@ import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.LoggedDashboardString;
+
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.util.ReplanningConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -83,6 +86,10 @@ public class DriveSubsystem extends SubsystemBase {
   private SlewRateLimiter m_magLimiter = new SlewRateLimiter(DriveConstants.kMagnitudeSlewRate);
   private SlewRateLimiter m_rotLimiter = new SlewRateLimiter(DriveConstants.kRotationalSlewRate);
   private double m_prevTime = WPIUtilJNI.now() * 1e-6;
+
+  private final String POSE_LOG_PATH = "/Pose";
+  private final String ACTUAL_SWERVE_STATE_LOG_PATH = "/ActualSwerveState";
+  private final String DESIRED_SWERVE_STATE_LOG_PATH = "/DesiredSwerveState";
 
   // Odometry class for tracking robot pose
   // SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
@@ -172,7 +179,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Yaw", -m_gyro.getYaw());
     SmartDashboard.putNumber("Pitch", -m_gyro.getPitch());
     SmartDashboard.putNumber("Roll", -m_gyro.getRoll());
-
+    logOutputs();
   }
 
   /**
@@ -302,6 +309,8 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontRight.setDesiredState(desiredStates[1]);
     m_rearLeft.setDesiredState(desiredStates[2]);
     m_rearRight.setDesiredState(desiredStates[3]);
+
+    Logger.recordOutput(getName() + DESIRED_SWERVE_STATE_LOG_PATH, desiredStates);
   }
 
   /** Resets the drive encoders to currently read a position of 0. */
@@ -358,5 +367,11 @@ public class DriveSubsystem extends SubsystemBase {
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
     setModuleStates(swerveModuleStates);
+  } 
+
+  /// Log Driverstation Outputs
+  private void logOutputs() {
+    Logger.recordOutput(getName() + POSE_LOG_PATH, getPose());
+    Logger.recordOutput(getName() + ACTUAL_SWERVE_STATE_LOG_PATH, getModuleStates());
   }
 }

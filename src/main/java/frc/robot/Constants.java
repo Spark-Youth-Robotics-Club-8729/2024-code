@@ -193,10 +193,19 @@ public final class Constants {
     public static final double kD = 0.0;
     public static final double PIDSetpoint = 2.83;
     public static final double stall = -0.1;
+
+    // intake up/down encoder setpoints
+    public static final double rotationOut = -3; // intake is extended outwards
+    public static final double rotationIn = -5; // intake is retracted
   }
 
   public static final class ClimbConstants {
     public static final int ClimbSpinMotorCanID = 13;
     public static final double ClimbSpinMotorSpeed = 0.1;
+  }
+
+  public static final class AdvantageConstants{
+    /** Environment variable to toggle robot replay */
+    public static final String REPLAY_ENVIRONMENT_VAR = "ROBOT_REPLAY";
   }
 }
