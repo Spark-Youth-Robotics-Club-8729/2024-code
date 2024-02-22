@@ -195,8 +195,8 @@ public final class Constants {
     public static final double stall = -0.1;
 
     // intake up/down encoder setpoints
-    public static final double rotationOut = 3.70; // intake is extended outwards
-    public static final double rotationIn = 1.5; // intake is retracted
+    public static final double rotationOut = -3; // intake is extended outwards
+    public static final double rotationIn = -5; // intake is retracted
   }
 
   public static final class ClimbConstants {

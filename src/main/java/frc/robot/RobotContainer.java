@@ -39,6 +39,7 @@ import frc.robot.commands.AutoShot;
 import frc.robot.commands.AutoIntake;
 import frc.robot.commands.AutoRotate;
 import frc.robot.commands.IntakeAndRetract;
+import frc.robot.commands.RetractIntake;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -124,7 +125,7 @@ public class RobotContainer {
                                                 m_robotDrive));
                 m_driverController.y().whileTrue(new RunCommand(() -> m_robotDrive.m_gyro.zeroYaw(), m_robotDrive));
 
-                m_driverController.axisGreaterThan(3, 0.2)
+                m_driverController.leftTrigger(0.7)
                                 .whileTrue(new RunCommand(
                                                 () -> m_robotDrive.drive(
                                                                 -MathUtil.applyDeadband(
@@ -139,9 +140,10 @@ public class RobotContainer {
                                                                 true, true),
                                                 m_robotDrive));
 
-                m_driverController.axisGreaterThan(6, 0.7)
-                                .whileTrue(new IntakeAndRetract(m_robotIntake, -0.4, -0.8)); // rot out speed, intake
-                                                                                             // speed
+                m_driverController.rightTrigger(0.15)
+                                .whileTrue(new IntakeAndRetract(m_robotIntake, -0.3, -0.8))// rot out speed, intake
+                                .onFalse(new RetractIntake(m_robotIntake, -0.3));
+                                                                                         
 
                 // new JoystickButton(m_operatorController, 9).whileTrue(
                 // new RunCommand(() ->
@@ -152,7 +154,7 @@ public class RobotContainer {
                 m_operatorController.x().whileTrue(new IntakeSetSpin(m_robotIntake, -0.8));
                 m_operatorController.rightBumper().whileTrue(new ShooterSet(m_robotShooter, 0.9));
                 m_operatorController.leftBumper().whileTrue(new ShooterSet(m_robotShooter, -0.5));
-                m_operatorController.rightTrigger().whileTrue(new ShooterSet(m_robotShooter, 0.5));
+                //m_operatorController.rightTrigger().whileTrue(new ShooterSet(m_robotShooter, 0.5));
                 m_operatorController.y().whileTrue(new IntakeSetRotation(m_robotIntake, 0.3));
                 m_operatorController.a().whileTrue(new IntakeSetRotation(m_robotIntake, -0.3));
 
