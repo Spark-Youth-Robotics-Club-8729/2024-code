@@ -26,6 +26,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.ClimberSet;
@@ -41,12 +42,17 @@ import frc.robot.commands.AutoRotate;
 import frc.robot.commands.IntakeAndRetract;
 import frc.robot.commands.RetractIntake;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.List;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.PathPlannerLogging;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -61,6 +67,21 @@ public class RobotContainer {
         private final ClimbSubsystem m_robotClimb = new ClimbSubsystem();
         private final ShooterSubsystem m_robotShooter = new ShooterSubsystem();
 
+        private final Field2d field;
+
+        Pose2d allianceWingTargetPose = new Pose2d(5.62, 6.72, Rotation2d.fromDegrees(0.0));
+        Pose2d subwooferPose = new Pose2d(1.24, 5.55, Rotation2d.fromDegrees(0.0));
+
+        // Load the paths we want to follow
+        PathPlannerPath ampSideWingToSubwoofer = PathPlannerPath.fromPathFile("WingToSubwoofer");
+        PathPlannerPath sourceSideWingToSubwoofer = PathPlannerPath.fromPathFile("SourceToSpeaker");
+
+        // Create the constraints to use while pathfinding. The constraints defined in the path will only be used for the path.
+        PathConstraints constraintsA = new PathConstraints(
+                3.0, 2.0,
+                2*Math.PI, 2*Math.PI);
+
+
         private static SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
         // The driver's controller
@@ -68,6 +89,7 @@ public class RobotContainer {
 
         // The intake joystick
         CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
+
 
         /**
          * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -89,6 +111,29 @@ public class RobotContainer {
                 SmartDashboard.putData(m_robotShooter);
                 SmartDashboard.putData(m_robotClimb);
 
+                field = new Field2d();
+                SmartDashboard.putData("Field", field);
+
+                // Logging callback for current robot pose
+                PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
+                        // Do whatever you want with the pose here
+                        field.setRobotPose(pose);
+                });
+
+                // Logging callback for target robot pose
+                PathPlannerLogging.setLogTargetPoseCallback((pose) -> {
+                        // Do whatever you want with the pose here
+                        field.getObject("target pose").setPose(pose);
+                });
+
+                // Logging callback for the active path, this is sent as a list of poses
+                PathPlannerLogging.setLogActivePathCallback((poses) -> {
+                        // Do whatever you want with the poses here
+                        field.getObject("path").setPoses(poses);
+                });
+
+                //Since AutoBuilder is configured, we can use it to build pathfinding commands
+                
                 // Configure default commands
                 m_robotDrive.setDefaultCommand(
                                 // The left stick controls translation of the robot.
@@ -143,6 +188,18 @@ public class RobotContainer {
                 m_driverController.rightTrigger(0.15)
                                 .whileTrue(new IntakeAndRetract(m_robotIntake, -0.3, -0.8))// rot out speed, intake
                                 .onFalse(new RetractIntake(m_robotIntake, -0.3));
+
+                m_driverController.x()
+                        .whileTrue(
+                                AutoBuilder.pathfindThenFollowPath(
+                                        ampSideWingToSubwoofer, constraintsA, 1.4 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
+                                )
+                        );
+                m_driverController.a().whileTrue(
+                        AutoBuilder.pathfindThenFollowPath(
+                                        sourceSideWingToSubwoofer, constraintsA, 1.4 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
+                        )
+                );
                                                                                          
 
                 // new JoystickButton(m_operatorController, 9).whileTrue(
