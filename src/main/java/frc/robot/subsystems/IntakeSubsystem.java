@@ -140,7 +140,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public double getRotationEncoder(){
-        //return IntakeRotateEncoder.getPosition();
-        return -3;
+        return IntakeRotateEncoder.getPosition();
+        //return -3;
     }
 }
