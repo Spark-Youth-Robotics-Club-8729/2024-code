@@ -73,8 +73,7 @@ public class RobotContainer {
         private final Field2d field;
 
         Pose2d allianceWingTargetPose = new Pose2d(5.62, 6.72, Rotation2d.fromDegrees(0.0));
-        
-        
+
         Pose2d subwooferPose = new Pose2d(1.24, 5.55, Rotation2d.fromDegrees(0.0));
 
         // Load the paths we want to follow
@@ -214,7 +213,6 @@ public class RobotContainer {
                                         sourceSideWingToSubwoofer, constraintsA, 1.4 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
                         )
                 );
-
                 m_driverController.y().whileTrue(
                         AutoBuilder.pathfindThenFollowPath(
                                         toAllianceSource, constraintsA, 1.4 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
