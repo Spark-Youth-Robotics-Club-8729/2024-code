@@ -38,6 +38,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.AutoShot;
 import frc.robot.commands.AutoIntake;
+import frc.robot.commands.AutoRevShooter;
 import frc.robot.commands.AutoRotate;
 import frc.robot.commands.IntakeAndRetract;
 import frc.robot.commands.RetractIntake;
@@ -46,6 +47,8 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.List;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -70,15 +73,18 @@ public class RobotContainer {
         private final Field2d field;
 
         Pose2d allianceWingTargetPose = new Pose2d(5.62, 6.72, Rotation2d.fromDegrees(0.0));
+        
+        
         Pose2d subwooferPose = new Pose2d(1.24, 5.55, Rotation2d.fromDegrees(0.0));
 
         // Load the paths we want to follow
         PathPlannerPath ampSideWingToSubwoofer = PathPlannerPath.fromPathFile("WingToSubwoofer");
-        PathPlannerPath sourceSideWingToSubwoofer = PathPlannerPath.fromPathFile("SourceToSpeaker");
+        PathPlannerPath sourceSideWingToSubwoofer = PathPlannerPath.fromPathFile("SourceToSubwoofer");
+        PathPlannerPath toAllianceSource = PathPlannerPath.fromPathFile("ToSource");
 
         // Create the constraints to use while pathfinding. The constraints defined in the path will only be used for the path.
         PathConstraints constraintsA = new PathConstraints(
-                3.0, 2.0,
+                3.0, 3.0,
                 2*Math.PI, 2*Math.PI);
 
 
@@ -98,6 +104,7 @@ public class RobotContainer {
                 NamedCommands.registerCommand("AutoShot", new AutoShot(m_robotShooter, m_robotIntake));
                 NamedCommands.registerCommand("AutoIntake", new AutoIntake(m_robotIntake));
                 NamedCommands.registerCommand("AutoRotate", new AutoRotate(m_robotIntake));
+                NamedCommands.registerCommand("AutoRevShooter", new AutoRevShooter(m_robotShooter));
 
                 // Configure the button bindings
                 configureButtonBindings();
@@ -168,7 +175,8 @@ public class RobotContainer {
                                 .whileTrue(new RunCommand(
                                                 () -> m_robotDrive.setX(),
                                                 m_robotDrive));
-                m_driverController.y().whileTrue(new RunCommand(() -> m_robotDrive.m_gyro.zeroYaw(), m_robotDrive));
+
+                m_driverController.povLeft().whileTrue(new RunCommand(() -> m_robotDrive.m_gyro.zeroYaw(), m_robotDrive));
 
                 m_driverController.leftTrigger(0.7)
                                 .whileTrue(new RunCommand(
@@ -185,9 +193,15 @@ public class RobotContainer {
                                                                 true, true),
                                                 m_robotDrive));
 
-                m_driverController.rightTrigger(0.15)
+                // m_driverController.rightTrigger().whileTrue(
+                //         new RunCommand(
+                //                 ()->m_robotDrive
+                //         )
+                // )
+
+                m_operatorController.povRight()
                                 .whileTrue(new IntakeAndRetract(m_robotIntake, -0.3, -0.8))// rot out speed, intake
-                                .onFalse(new RetractIntake(m_robotIntake, -0.3));
+                                .onFalse(m_robotIntake.ampPosition().withTimeout(1.2));
 
                 m_driverController.x()
                         .whileTrue(
@@ -200,18 +214,39 @@ public class RobotContainer {
                                         sourceSideWingToSubwoofer, constraintsA, 1.4 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
                         )
                 );
+
+                m_driverController.y().whileTrue(
+                        AutoBuilder.pathfindThenFollowPath(
+                                        toAllianceSource, constraintsA, 1.4 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
+                        )
+                );
+
+                // m_driverController.povUp().whileTrue(new ClimberSet(m_robotClimb, -0.3));
+                // m_driverController.povDown().whileTrue(new ClimberSet(m_robotClimb, 0.3));
+                //  m_driverController.b().whileTrue(new IntakeSetSpin(m_robotIntake, 0.4));
+                //  m_driverController.x().whileTrue(new IntakeSetSpin(m_robotIntake, -0.5));
+                // // m_driverController.rightBumper().whileTrue(new ShooterSet(m_robotShooter, 0.3));
+                // // m_driverController.leftBumper().whileTrue(new ShooterSet(m_robotShooter, -0.5));
+                // m_driverController.rightBumper().whileTrue(new ShooterSet(m_robotShooter, 0.7));
+                // m_driverController.y().whileTrue(new IntakeSetRotation(m_robotIntake, 0.3));
+                // m_driverController.a().whileTrue(new IntakeSetRotation(m_robotIntake, -0.3));
                                                                                          
 
                 // new JoystickButton(m_operatorController, 9).whileTrue(
                 // new RunCommand(() ->
                 // m_robotClimb.setSpin(m_operatorController.getRawAxis(1)), m_robotClimb));
-                m_operatorController.leftTrigger()
-                                .whileTrue(new ClimberSet(m_robotClimb, m_operatorController.getLeftY()));
-                m_operatorController.b().whileTrue(new IntakeSetSpin(m_robotIntake, 0.6));
+
+
+                m_operatorController.povUp()
+                                .whileTrue(new ClimberSet(m_robotClimb, -0.9));
+                m_operatorController.povDown()
+                                .whileTrue(new ClimberSet(m_robotClimb, 0.9));
+                m_operatorController.b().whileTrue(new IntakeSetSpin(m_robotIntake, 0.9));
                 m_operatorController.x().whileTrue(new IntakeSetSpin(m_robotIntake, -0.8));
-                m_operatorController.rightBumper().whileTrue(new ShooterSet(m_robotShooter, 0.9));
-                m_operatorController.leftBumper().whileTrue(new ShooterSet(m_robotShooter, -0.5));
-                //m_operatorController.rightTrigger().whileTrue(new ShooterSet(m_robotShooter, 0.5));
+                m_operatorController.rightBumper().whileTrue(new ShooterSet(m_robotShooter, 0.9, true));
+                m_operatorController.leftBumper().whileTrue(new ShooterSet(m_robotShooter, -0.25, true));
+                m_operatorController.rightTrigger().whileTrue(new ShooterSet(m_robotShooter, 0.17, false));
+                m_operatorController.povLeft().whileTrue(m_robotIntake.ampPosition());
                 m_operatorController.y().whileTrue(new IntakeSetRotation(m_robotIntake, 0.3));
                 m_operatorController.a().whileTrue(new IntakeSetRotation(m_robotIntake, -0.3));
 
@@ -245,7 +280,8 @@ public class RobotContainer {
          * Add auto sequences to chooser
          */
         private void autoChooser() {
-                m_autoChooser.setDefaultOption("Mid + Amp side 3 note auto", new PathPlannerAuto("MidShotNoteShot"));
+                m_autoChooser.setDefaultOption("Center: Mid + Amp side 3 note auto", new PathPlannerAuto("MidShotNoteShot"));
+                m_autoChooser.addOption("AmpSide: Alliance 1 + Center 2 + Center 1", new PathPlannerAuto("UpperSubClose1Far21"));
                 // m_autoChooser.addOption("4 Note Auto 1", new PathPlannerAuto("4 Note Auto
                 // 1"));
 

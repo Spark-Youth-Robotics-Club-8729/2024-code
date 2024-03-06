@@ -20,6 +20,7 @@
       "/SmartDashboard/ClimbSubsystem": "Subsystem",
       "/SmartDashboard/DriveSubsystem": "Subsystem",
       "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/Intake PID Data": "PIDController",
       "/SmartDashboard/IntakeSubsystem": "Subsystem",
       "/SmartDashboard/ShooterSubsystem": "Subsystem"
     },

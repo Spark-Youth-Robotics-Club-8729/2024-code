@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.ShooterSet;
+import frc.robot.commands.AutoRevShooter;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -19,10 +20,9 @@ public class AutoShot extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ShooterSet(m_robotShooter, 0.9).withTimeout(0.4),
       new ParallelCommandGroup (
-        new ShooterSet(m_robotShooter, 0.9).withTimeout(0.6),
-        new IntakeSetSpin(m_robotIntake, 0.6).withTimeout(0.6)
+        new ShooterSet(m_robotShooter, 0.9, true).withTimeout(0.4),
+        new IntakeSetSpin(m_robotIntake, 0.6).withTimeout(0.4)
       )
     );
   }

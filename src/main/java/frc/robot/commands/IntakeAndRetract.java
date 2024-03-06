@@ -42,14 +42,14 @@ public class IntakeAndRetract extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // if (m_intakesubsystem.getRotationEncoder() < IntakeConstants.rotationIn) {
-    //   m_intakesubsystem.setRotate(-m_rotationSpeed);
-    // } else if(m_intakesubsystem.getRotationEncoder()<-0.8){
-    //     m_intakesubsystem.setRotate(-0.8);
-    //   }
-    // else{
-    //   m_intakesubsystem.setRotate(0.0);
-    // }
+    if (m_intakesubsystem.getRotationEncoder() < IntakeConstants.rotationIn) {
+      m_intakesubsystem.setRotate(-m_rotationSpeed);
+    } else if(m_intakesubsystem.getRotationEncoder()<-0.8){
+        m_intakesubsystem.setRotate(-0.8);
+      }
+    else{
+      m_intakesubsystem.setRotate(0.0);
+    }
 
     m_intakesubsystem.setSpin(0.0);
   }

@@ -18,6 +18,7 @@ import edu.wpi.first.units.Velocity;
 import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import static edu.wpi.first.units.MutableMeasure.mutable;
 import static edu.wpi.first.units.Units.Meters;
@@ -82,6 +83,7 @@ public class IntakeSubsystem extends SubsystemBase {
         IntakeSpinMotor = new CANSparkMax(IntakeConstants.IntakeSpinMotorCanID, MotorType.kBrushless);
         IntakeRotateMotor = new CANSparkMax(IntakeConstants.IntakeRotateMotorCanID, MotorType.kBrushless);
         IntakeRotateEncoder = IntakeRotateMotor.getEncoder();
+    
         MathUtil.clamp(rotationPID.calculate(IntakeRotateEncoder.getPosition(), IntakeConstants.PIDSetpoint), -0.5,
                 0.5);
 
@@ -96,9 +98,19 @@ public class IntakeSubsystem extends SubsystemBase {
         IntakeRotateMotor.set(speed);
     }
 
+    public void setVoltage(double voltage){
+        IntakeRotateMotor.setVoltage(4);
+    }
+
     
     public void rotatePID() {
         IntakeRotateMotor.set(rotationPID.calculate(IntakeConstants.PIDSetpoint, IntakeRotateEncoder.getPosition()));
+    }
+
+    public Command ampPosition() {
+        return run(()->
+        IntakeRotateMotor.set(-rotationPID.calculate(IntakeConstants.PIDSetpoint, IntakeRotateEncoder.getPosition()))
+        ).finallyDo(()->setRotate(0.0));
     }
 
     public void periodic() {
@@ -106,7 +118,9 @@ public class IntakeSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Current Rotation Speed", getRotation());
         SmartDashboard.putNumber("Current Intake Speed", getSpin());
         SmartDashboard.putNumber("Rotation PID Speed",
-                rotationPID.calculate(IntakeConstants.PIDSetpoint, IntakeRotateEncoder.getPosition()));
+                rotationPID.calculate(-IntakeConstants.PIDSetpoint, IntakeRotateEncoder.getPosition()));
+        SmartDashboard.putData("Intake PID Data", rotationPID);
+        SmartDashboard.putNumber("Sim Rotation Encoder", IntakeRotateEncoder.getPosition());
         logOutputs();
     }
 
@@ -141,6 +155,5 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public double getRotationEncoder(){
         return IntakeRotateEncoder.getPosition();
-        //return -3;
     }
 }

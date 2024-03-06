@@ -4,19 +4,22 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.ShooterSet;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class AutoRotate extends SequentialCommandGroup {
-  /** Creates a new AutoRotate. */
-  public AutoRotate(IntakeSubsystem m_robotIntake) {
+public class AutoRevShooter extends SequentialCommandGroup {
+  /** Creates a new AutoShot. */
+  public AutoRevShooter(ShooterSubsystem m_robotShooter) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new IntakeSetRotation(m_robotIntake, 0.4).withTimeout(0.6)
+      new ShooterSet(m_robotShooter, 0.9, true)
     );
   }
 }

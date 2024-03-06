@@ -51,6 +51,11 @@ public class ShooterSubsystem extends SubsystemBase {
         rightShooterWheel.set(speed);
     }
 
+    public synchronized void setShooter(double leftSpeed, double rightSpeed) {
+        leftShooterWheel.set(leftSpeed);
+        rightShooterWheel.set(rightSpeed);
+    }
+
     public synchronized void setShooterVelocity(double rpm) {
         leftShooterWheel.set(rpm / 5676 + shooterLeftPID.calculate(leftShooterWheelEncoder.getVelocity(), rpm));
         rightShooterWheel.set(rpm / 5676 + shooterRightPID.calculate(rightShooterWheelEncoder.getVelocity(), rpm));
