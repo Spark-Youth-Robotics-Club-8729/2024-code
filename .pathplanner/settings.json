@@ -1,0 +1,22 @@
+{
+  "robotWidth": 0.6858,
+  "robotLength": 0.6858,
+  "holonomicMode": true,
+  "pathFolders": [
+    "FromCenterNote",
+    "FromCloseNote",
+    "FromMidSubwoofer",
+    "FromUpperSubwoofer",
+    "FromLowerSubwoofer"
+  ],
+  "autoFolders": [
+    "MidSubAutos",
+    "LowerSubAutos",
+    "UpperSubAutos"
+  ],
+  "defaultMaxVel": 3.0,
+  "defaultMaxAccel": 2.0,
+  "defaultMaxAngVel": 360.0,
+  "defaultMaxAngAccel": 360.0,
+  "maxModuleSpeed": 4.1
+}
