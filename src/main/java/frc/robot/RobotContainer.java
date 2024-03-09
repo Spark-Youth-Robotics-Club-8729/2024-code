@@ -241,8 +241,8 @@ public class RobotContainer {
                                 .whileTrue(new ClimberSet(m_robotClimb, -0.9));
                 m_operatorController.povDown()
                                 .whileTrue(new ClimberSet(m_robotClimb, 0.9));
-                m_operatorController.b().whileTrue(new IntakeSetSpin(m_robotIntake, 0.9));
-                m_operatorController.x().whileTrue(new IntakeSetSpin(m_robotIntake, -0.8));
+                m_operatorController.b().whileTrue(new IntakeSetSpin(m_robotIntake, -0.9));
+                m_operatorController.x().whileTrue(new IntakeSetSpin(m_robotIntake, 0.3));
                 m_operatorController.rightBumper().whileTrue(new ShooterSet(m_robotShooter, 0.9, true));
                 m_operatorController.leftBumper().whileTrue(new ShooterSet(m_robotShooter, -0.25, true));
                 m_operatorController.rightTrigger().whileTrue(new ShooterSet(m_robotShooter, 0.17, false));
