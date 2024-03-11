@@ -41,16 +41,6 @@ public class Robot extends LoggedRobot {
 
     // AdvantageKit Logging
     //BatteryTracker batteryTracker = new BatteryTracker(BatteryTracker.initializeHardware());
-    if(isReal())
-    Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
-    else
-    Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME+"_sim");
-    Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
-    Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
-    Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
-    Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
-    //Logger.recordMetadata("BatteryName", batteryTracker.scanBattery());
-
     if(isReal()) {
       // If robot is real, log to USB drive and publish data to NetworkTables
       Logger.addDataReceiver(new WPILOGWriter("/AdvantageLogs/"));
