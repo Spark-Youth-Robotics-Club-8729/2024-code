@@ -1,0 +1,100 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 0.66,
+        "y": 4.58
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.1600000000000001,
+        "y": 3.7139745962155617
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.314546837367568,
+        "y": 0.6206743369264197
+      },
+      "prevControl": {
+        "x": 5.314546837367568,
+        "y": 0.6206743369264197
+      },
+      "nextControl": {
+        "x": 7.314546837367568,
+        "y": 0.6206743369264197
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.410786579062458,
+        "y": 0.772915212021579
+      },
+      "prevControl": {
+        "x": 8.404521647766657,
+        "y": 0.35316481520289106
+      },
+      "nextControl": {
+        "x": 8.42249741560824,
+        "y": 1.5575412605889405
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.410786579062458,
+        "y": 7.178742802564065
+      },
+      "prevControl": {
+        "x": 8.445919088699803,
+        "y": 6.780574360007493
+      },
+      "nextControl": {
+        "x": 8.395041163035756,
+        "y": 7.357190850866691
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.759558626107264,
+        "y": 7.3544053507507865
+      },
+      "prevControl": {
+        "x": 8.65671414652387,
+        "y": 7.939947178039862
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 360.0,
+    "maxAngularAcceleration": 360.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "FromLowerSubwoofer",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

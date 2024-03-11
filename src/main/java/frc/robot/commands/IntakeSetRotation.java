@@ -33,7 +33,7 @@ public class IntakeSetRotation extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intakesubsystem.setRotate(0.0);
+    m_intakesubsystem.setRotate(0.05);
   }
 
   // Returns true when the command should end.

@@ -3,25 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.24,
-        "y": 5.55
+        "x": 8.31,
+        "y": 0.74
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.24,
-        "y": 5.55
+        "x": 7.793410909380741,
+        "y": 1.9570076312941247
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.6015831638103353,
-        "y": 6.975699103455452
+        "x": 4.8155597595075355,
+        "y": 1.8268905011419148
       },
       "prevControl": {
-        "x": 1.6015831638103353,
-        "y": 6.975699103455452
+        "x": 5.990648875041422,
+        "y": 1.7041937388566653
+      },
+      "nextControl": {
+        "x": 3.640470643973649,
+        "y": 1.9495872634271645
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 0.66,
+        "y": 4.58
+      },
+      "prevControl": {
+        "x": 3.421970210559535,
+        "y": 2.6125794603087056
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,13 +55,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": -60.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "FromCenterNote",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": -60.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

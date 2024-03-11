@@ -80,7 +80,7 @@ public class IntakeSubsystem extends SubsystemBase {
                     this, "intake rotation"));
 
     public IntakeSubsystem() {
-        IntakeSpinMotor = new CANSparkMax(IntakeConstants.IntakeSpinMotorCanID, MotorType.kBrushless);
+        IntakeSpinMotor = new CANSparkMax(IntakeConstants.IntakeSpinMotorCanID, MotorType.kBrushed);
         IntakeRotateMotor = new CANSparkMax(IntakeConstants.IntakeRotateMotorCanID, MotorType.kBrushless);
         IntakeRotateEncoder = IntakeRotateMotor.getEncoder();
     
@@ -90,7 +90,6 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void setSpin(double speed) {
-        System.out.println("hi intake speed: " + speed);
         IntakeSpinMotor.set(speed);
     }
 

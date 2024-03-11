@@ -20,7 +20,7 @@ public class AutoShot extends SequentialCommandGroup {
     addCommands(
       new ParallelCommandGroup (
         new ShooterSet(m_robotShooter, 0.9, true).withTimeout(0.4),
-        new IntakeSetSpin(m_robotIntake, 0.6).withTimeout(0.4)
+        new IntakeSetSpin(m_robotIntake, -0.9).withTimeout(0.4)
       )
     );
   }

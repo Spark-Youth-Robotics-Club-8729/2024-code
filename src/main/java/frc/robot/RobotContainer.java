@@ -90,11 +90,6 @@ public class RobotContainer {
                 2*Math.PI, 2*Math.PI);
 
         private static SendableChooser<Command> m_autoChooser = new SendableChooser<>();
-        
-        private String midSubwoofer  = "midAuto";
-        private String ampSideSubwoofer = "ampSideAuto";
-        private String sourceSideWubwoofer = "sourceSideAuto";
-        private String noPositionSelected = "noAuto";
 
         // The driver's controller
         CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
@@ -185,18 +180,18 @@ public class RobotContainer {
 
                 ////
 
-                m_driverController.leftTrigger(0.7)
+                m_driverController.leftTrigger(0.1)
                                 .whileTrue(new RunCommand(
                                                 () -> m_robotDrive.drive(
                                                                 -MathUtil.applyDeadband(
                                                                                 m_driverController.getRawAxis(1),
-                                                                                OIConstants.kDriveDeadband) * 0.4,
+                                                                                OIConstants.kDriveDeadband) * m_driverController.getLeftTriggerAxis() * 0.4,
                                                                 -MathUtil.applyDeadband(
                                                                                 m_driverController.getRawAxis(0),
-                                                                                OIConstants.kDriveDeadband) * 0.4,
+                                                                                OIConstants.kDriveDeadband) * m_driverController.getLeftTriggerAxis() * 0.4,
                                                                 -MathUtil.applyDeadband(
                                                                                 m_driverController.getRawAxis(4),
-                                                                                OIConstants.kDriveDeadband) * 0.4,
+                                                                                OIConstants.kDriveDeadband) * m_driverController.getLeftTriggerAxis() * 0.4,
                                                                 true, true),
                                                 m_robotDrive));
 
@@ -241,14 +236,14 @@ public class RobotContainer {
                                 .whileTrue(new ClimberSet(m_robotClimb, -0.9));
                 m_operatorController.povDown()
                                 .whileTrue(new ClimberSet(m_robotClimb, 0.9));
-                m_operatorController.b().whileTrue(new IntakeSetSpin(m_robotIntake, 0.9));
-                m_operatorController.x().whileTrue(new IntakeSetSpin(m_robotIntake, -0.8));
+                m_operatorController.b().whileTrue(new IntakeSetSpin(m_robotIntake, -0.9));
+                m_operatorController.x().whileTrue(new IntakeSetSpin(m_robotIntake, 0.6));
                 m_operatorController.rightBumper().whileTrue(new ShooterSet(m_robotShooter, 0.9, true));
                 m_operatorController.leftBumper().whileTrue(new ShooterSet(m_robotShooter, -0.25, true));
                 m_operatorController.rightTrigger().whileTrue(new ShooterSet(m_robotShooter, 0.17, false));
                 m_operatorController.povLeft().whileTrue(m_robotIntake.ampPosition());
-                m_operatorController.y().whileTrue(new IntakeSetRotation(m_robotIntake, 0.3));
-                m_operatorController.a().whileTrue(new IntakeSetRotation(m_robotIntake, -0.3));
+                m_operatorController.y().whileTrue(new IntakeSetRotation(m_robotIntake, 0.5));
+                m_operatorController.a().whileTrue(new IntakeSetRotation(m_robotIntake, -0.5));
 
                 // new JoystickButton(m_operatorController, 1)
                 // .whileTrue(new IntakeSetRotation(m_robotIntake, 0.5));
@@ -306,9 +301,12 @@ public class RobotContainer {
                 m_autoChooser.addOption("Center: Close2,3,1 no rotation", new PathPlannerAuto("MidSubClose231NoRotation"));
                 m_autoChooser.addOption("Center: Close2,3 + Center 2", new PathPlannerAuto("MidSubClose23Center2"));
                 m_autoChooser.addOption("Center: Close2,3 + Center 1", new PathPlannerAuto("MidSubClose23Center1"));
+                                m_autoChooser.addOption("Center: Close 2,3 + Center 4", new PathPlannerAuto("MidSubClose23Center4"));
+
                 m_autoChooser.addOption("SourceSide: Score preloaded + do nothing", new PathPlannerAuto("LowerSubScorePreloadOnly"));
                 m_autoChooser.addOption("SourceSide: Close3 + Center4,5", new PathPlannerAuto("LowerSubClose3Center45"));
                 m_autoChooser.addOption("SourceSide: Center5,4 + Close3", new PathPlannerAuto("LowerSubCenter54Close3"));
+                m_autoChooser.addOption("SourceSide: Straight center5,4 + close3", new PathPlannerAuto("LowerSubCenter5Straight"));
                 m_autoChooser.addOption("Test-Center: Mid + Amp side 3 note auto", new PathPlannerAuto("MidShotNoteShot"));
                 
                 // m_autoChooser.addOption("4 Note Auto 1", new PathPlannerAuto("4 Note Auto
