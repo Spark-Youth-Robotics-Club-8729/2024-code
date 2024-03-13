@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.77,
-      "y": 4.5
+      "x": 0.66,
+      "y": 4.58
     },
     "rotation": -60.0
   },
@@ -100,7 +100,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "LowerSubToCenter5"
+                  "pathName": "LowerSubToCenter5NoRotation"
                 }
               },
               {
