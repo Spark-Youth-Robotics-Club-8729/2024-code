@@ -47,6 +47,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.List;
+import org.littletonrobotics.junction.Logger;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -84,10 +85,11 @@ public class RobotContainer {
         PathPlannerPath sourceSideWingToSubwoofer = PathPlannerPath.fromPathFile("SourceToSubwoofer");
         PathPlannerPath toAllianceSource = PathPlannerPath.fromPathFile("ToSource");
 
-        // Create the constraints to use while pathfinding. The constraints defined in the path will only be used for the path.
+        // Create the constraints to use while pathfinding. The constraints defined in
+        // the path will only be used for the path.
         PathConstraints constraintsA = new PathConstraints(
-                3.0, 3.0,
-                2*Math.PI, 2*Math.PI);
+                        3.0, 3.0,
+                        2 * Math.PI, 2 * Math.PI);
 
         private static SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
@@ -139,8 +141,8 @@ public class RobotContainer {
                         field.getObject("path").setPoses(poses);
                 });
 
-                //Since AutoBuilder is configured, we can use it to build pathfinding commands
-                
+                // Since AutoBuilder is configured, we can use it to build pathfinding commands
+
                 // Configure default commands
                 m_robotDrive.setDefaultCommand(
                                 // The left stick controls translation of the robot.
@@ -158,6 +160,18 @@ public class RobotContainer {
                                                                                 OIConstants.kDriveDeadband),
                                                                 true, true),
                                                 m_robotDrive));
+                Logger.recordOutput("Raw Driver Data axis 1", m_driverController.getRawAxis(1));
+                Logger.recordOutput("Raw Driver Data axis 0", m_driverController.getRawAxis(0));
+                Logger.recordOutput("Raw Driver Data axis 4", m_driverController.getRawAxis(4));
+                Logger.recordOutput("Processed Driver Data axis 1", -MathUtil.applyDeadband(
+                                m_driverController.getRawAxis(1),
+                                OIConstants.kDriveDeadband));
+                Logger.recordOutput("Processed Driver Data axis 0", -MathUtil.applyDeadband(
+                                m_driverController.getRawAxis(0),
+                                OIConstants.kDriveDeadband));
+                Logger.recordOutput("Processed Driver Data axis 4", -MathUtil.applyDeadband(
+                                m_driverController.getRawAxis(4),
+                                OIConstants.kDriveDeadband));
 
         }
 
@@ -176,7 +190,8 @@ public class RobotContainer {
                                                 () -> m_robotDrive.setX(),
                                                 m_robotDrive));
 
-                m_driverController.povLeft().whileTrue(new RunCommand(() -> m_robotDrive.m_gyro.zeroYaw(), m_robotDrive));
+                m_driverController.povLeft()
+                                .whileTrue(new RunCommand(() -> m_robotDrive.m_gyro.zeroYaw(), m_robotDrive));
 
                 ////
 
@@ -185,52 +200,79 @@ public class RobotContainer {
                                                 () -> m_robotDrive.drive(
                                                                 -MathUtil.applyDeadband(
                                                                                 m_driverController.getRawAxis(1),
-                                                                                OIConstants.kDriveDeadband) * m_driverController.getLeftTriggerAxis() * 0.4,
+                                                                                OIConstants.kDriveDeadband)
+                                                                                * m_driverController
+                                                                                                .getLeftTriggerAxis()
+                                                                                * 0.4,
                                                                 -MathUtil.applyDeadband(
                                                                                 m_driverController.getRawAxis(0),
-                                                                                OIConstants.kDriveDeadband) * m_driverController.getLeftTriggerAxis() * 0.4,
+                                                                                OIConstants.kDriveDeadband)
+                                                                                * m_driverController
+                                                                                                .getLeftTriggerAxis()
+                                                                                * 0.4,
                                                                 -MathUtil.applyDeadband(
                                                                                 m_driverController.getRawAxis(4),
-                                                                                OIConstants.kDriveDeadband) * m_driverController.getLeftTriggerAxis() * 0.4,
+                                                                                OIConstants.kDriveDeadband)
+                                                                                * m_driverController
+                                                                                                .getLeftTriggerAxis()
+                                                                                * 0.4,
                                                                 true, true),
                                                 m_robotDrive));
 
                 m_driverController.x()
-                        .whileTrue(
-                                AutoBuilder.pathfindThenFollowPath(
-                                        ampSideWingToSubwoofer, constraintsA, 1.4 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
-                                )
-                        );
+                                .whileTrue(
+                                                AutoBuilder.pathfindThenFollowPath(
+                                                                ampSideWingToSubwoofer, constraintsA, 1.4 // Rotation
+                                                                                                          // delay
+                                                                                                          // distance in
+                                                                                                          // meters.
+                                                                                                          // This is how
+                                                                                                          // far the
+                                                                                                          // robot
+                                                                                                          // should
+                                                                                                          // travel
+                                                                                                          // before
+                                                                                                          // attempting
+                                                                                                          // to rotate.
+                                                ));
                 m_driverController.a().whileTrue(
-                        AutoBuilder.pathfindThenFollowPath(
-                                        sourceSideWingToSubwoofer, constraintsA, 1.4 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
-                        )
-                );
+                                AutoBuilder.pathfindThenFollowPath(
+                                                sourceSideWingToSubwoofer, constraintsA, 1.4 // Rotation delay distance
+                                                                                             // in meters. This is how
+                                                                                             // far the robot should
+                                                                                             // travel before attempting
+                                                                                             // to rotate.
+                                ));
                 m_driverController.y().whileTrue(
-                        AutoBuilder.pathfindThenFollowPath(
-                                        toAllianceSource, constraintsA, 1.4 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
-                        )
-                );
+                                AutoBuilder.pathfindThenFollowPath(
+                                                toAllianceSource, constraintsA, 1.4 // Rotation delay distance in
+                                                                                    // meters. This is how far the robot
+                                                                                    // should travel before attempting
+                                                                                    // to rotate.
+                                ));
 
                 ///
 
                 // m_driverController.povUp()
-                //                 .whileTrue(new ClimberSet(m_robotClimb, -0.9));
+                // .whileTrue(new ClimberSet(m_robotClimb, -0.9));
                 // m_driverController.povDown()
-                //                 .whileTrue(new ClimberSet(m_robotClimb, 0.9));
+                // .whileTrue(new ClimberSet(m_robotClimb, 0.9));
                 // m_driverController.b().whileTrue(new IntakeSetSpin(m_robotIntake, 0.9));
                 // m_driverController.x().whileTrue(new IntakeSetSpin(m_robotIntake, -0.8));
-                // m_driverController.rightBumper().whileTrue(new ShooterSet(m_robotShooter, 0.9, true));
-                // m_driverController.leftTrigger().whileTrue(new ShooterSet(m_robotShooter, -0.25, true));
-                // m_driverController.rightTrigger().whileTrue(new ShooterSet(m_robotShooter, 0.17, false));
-                
+                // m_driverController.rightBumper().whileTrue(new ShooterSet(m_robotShooter,
+                // 0.9, true));
+                // m_driverController.leftTrigger().whileTrue(new ShooterSet(m_robotShooter,
+                // -0.25, true));
+                // m_driverController.rightTrigger().whileTrue(new ShooterSet(m_robotShooter,
+                // 0.17, false));
+
                 // m_driverController.y().whileTrue(new IntakeSetRotation(m_robotIntake, 0.3));
                 // m_driverController.a().whileTrue(new IntakeSetRotation(m_robotIntake, -0.3));
                 // m_operatorController.povRight()
-                //                 .whileTrue(new IntakeAndRetract(m_robotIntake, -0.3, -0.8))// rot out speed, intake
-                //                 .onFalse(m_robotIntake.ampPosition().withTimeout(1.2));
-                //m_driverController.povLeft().whileTrue(m_robotIntake.ampPosition());
-
+                // .whileTrue(new IntakeAndRetract(m_robotIntake, -0.3, -0.8))// rot out speed,
+                // intake
+                // .onFalse(m_robotIntake.ampPosition().withTimeout(1.2));
+                // m_driverController.povLeft().whileTrue(m_robotIntake.ampPosition());
 
                 m_operatorController.povUp()
                                 .whileTrue(new ClimberSet(m_robotClimb, -0.9));
@@ -276,44 +318,55 @@ public class RobotContainer {
          */
         private void autoChooser() {
 
-                        /*////////////////////NOTE MAPPINGS////////////////////
-                        *     |____|<--amp                                    /
-                        *                                                  center1
-                        * AmpSide      close1                                 /
-                        * \                                                   /
-                        *  |                                               center2
-                // sub->*  |Center     close2                                 /
-                        *  |                                                  /
-                        * /                                                center3
-                        * SourceSide   close3       [stage area]              /         
-                        *                                                     /
-                        *                                                  center4
-                        *                                                     /
-                        *                                                     /
-                        * ---                                              center5
-                //source*     \                                               /
-                        *//////////////////////////////////////////////////////
+                /*
+                 * ////////////////////NOTE MAPPINGS////////////////////
+                 * |____|<--amp /
+                 * center1
+                 * AmpSide close1 /
+                 * \ /
+                 * | center2
+                 * // sub->* |Center close2 /
+                 * | /
+                 * / center3
+                 * SourceSide close3 [stage area] /
+                 * /
+                 * center4
+                 * /
+                 * /
+                 * --- center5
+                 * //source* \ /
+                 *//////////////////////////////////////////////////////
 
-                m_autoChooser.setDefaultOption("AmpSide: Score preloaded + do nothing", new PathPlannerAuto("UpperSubScorePreloadOnly"));
+                m_autoChooser.setDefaultOption("AmpSide: Score preloaded + do nothing",
+                                new PathPlannerAuto("UpperSubScorePreloadOnly"));
                 m_autoChooser.addOption("AmpSide: Close1 + Center2,1", new PathPlannerAuto("UpperSubClose1Center21"));
                 m_autoChooser.addOption("AmpSide: Close1,2 + Center1", new PathPlannerAuto("UpperSubClose12Center1"));
                 m_autoChooser.addOption("Ampside: Troll Centerline Auto", new PathPlannerAuto("UpperSubTrollAuto"));
 
-                m_autoChooser.addOption("Center: Score preloaded + do nothing", new PathPlannerAuto("MidSubScorePreloadOnly"));
-                m_autoChooser.addOption("Center: Close2,3,1 with rotation", new PathPlannerAuto("MidSubClose231Rotation"));
-                m_autoChooser.addOption("Center: Close2,3,1 no rotation", new PathPlannerAuto("MidSubClose231NoRotation"));
+                m_autoChooser.addOption("Center: Score preloaded + do nothing",
+                                new PathPlannerAuto("MidSubScorePreloadOnly"));
+                m_autoChooser.addOption("Center: Close2,3,1 with rotation",
+                                new PathPlannerAuto("MidSubClose231Rotation"));
+                m_autoChooser.addOption("Center: Close2,3,1 no rotation",
+                                new PathPlannerAuto("MidSubClose231NoRotation"));
                 m_autoChooser.addOption("Center: Close2,3 + Center 2", new PathPlannerAuto("MidSubClose23Center2"));
                 m_autoChooser.addOption("Center: Close2,3 + Center 1", new PathPlannerAuto("MidSubClose23Center1"));
                 m_autoChooser.addOption("Center: Close 2,3 + Center 4", new PathPlannerAuto("MidSubClose23Center4"));
 
-                m_autoChooser.addOption("SourceSide: Score preloaded + do nothing", new PathPlannerAuto("LowerSubScorePreloadOnly"));
-                m_autoChooser.addOption("SourceSide: Close3 + Center4,5", new PathPlannerAuto("LowerSubClose3Center45"));
-                m_autoChooser.addOption("SourceSide: Center5,4 + Close3", new PathPlannerAuto("LowerSubCenter54Close3"));
-                m_autoChooser.addOption("SourceSide: Straight center5,4 + close3", new PathPlannerAuto("LowerSubCenter5Straight"));
+                m_autoChooser.addOption("SourceSide: Score preloaded + do nothing",
+                                new PathPlannerAuto("LowerSubScorePreloadOnly"));
+                m_autoChooser.addOption("SourceSide: Close3 + Center4,5",
+                                new PathPlannerAuto("LowerSubClose3Center45"));
+                m_autoChooser.addOption("SourceSide: Center5,4 + Close3",
+                                new PathPlannerAuto("LowerSubCenter54Close3"));
+                m_autoChooser.addOption("SourceSide: Straight center5,4 + close3",
+                                new PathPlannerAuto("LowerSubCenter5Straight"));
                 m_autoChooser.addOption("SourceSide: Troll Centerline Auto", new PathPlannerAuto("LowerSubTrollAuto"));
-                m_autoChooser.addOption("SourceSide: Score preloaded + troll centerline", new PathPlannerAuto("LowerSubLongTrollAuto"));
-                m_autoChooser.addOption("Test-Center: Mid + Amp side 3 note auto", new PathPlannerAuto("MidShotNoteShot"));
-                
+                m_autoChooser.addOption("SourceSide: Score preloaded + troll centerline",
+                                new PathPlannerAuto("LowerSubLongTrollAuto"));
+                m_autoChooser.addOption("Test-Center: Mid + Amp side 3 note auto",
+                                new PathPlannerAuto("MidShotNoteShot"));
+
                 // m_autoChooser.addOption("4 Note Auto 1", new PathPlannerAuto("4 Note Auto
                 // 1"));
 
