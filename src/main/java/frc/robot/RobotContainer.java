@@ -286,6 +286,7 @@ public class RobotContainer {
                 m_operatorController.povLeft().whileTrue(m_robotIntake.ampPosition());
                 m_operatorController.y().whileTrue(new IntakeSetRotation(m_robotIntake, 0.5));
                 m_operatorController.a().whileTrue(new IntakeSetRotation(m_robotIntake, -0.5));
+                m_operatorController.povRight().whileTrue(new ServoSetRotation(m_robotIntake, 90));
 
                 // new JoystickButton(m_operatorController, 1)
                 // .whileTrue(new IntakeSetRotation(m_robotIntake, 0.5));
