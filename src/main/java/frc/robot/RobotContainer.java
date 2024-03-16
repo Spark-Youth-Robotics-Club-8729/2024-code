@@ -42,6 +42,7 @@ import frc.robot.commands.AutoRevShooter;
 import frc.robot.commands.AutoRotate;
 import frc.robot.commands.IntakeAndRetract;
 import frc.robot.commands.RetractIntake;
+import frc.robot.commands.ServoSetRotation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -286,7 +287,7 @@ public class RobotContainer {
                 m_operatorController.povLeft().whileTrue(m_robotIntake.ampPosition());
                 m_operatorController.y().whileTrue(new IntakeSetRotation(m_robotIntake, 0.5));
                 m_operatorController.a().whileTrue(new IntakeSetRotation(m_robotIntake, -0.5));
-                m_operatorController.povRight().whileTrue(new ServoSetRotation(m_robotIntake, 90));
+                m_operatorController.povRight().whileTrue(new ServoSetRotation(m_robotIntake, 180));
 
                 // new JoystickButton(m_operatorController, 1)
                 // .whileTrue(new IntakeSetRotation(m_robotIntake, 0.5));

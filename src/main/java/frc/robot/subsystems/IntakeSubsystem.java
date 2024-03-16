@@ -17,6 +17,7 @@ import edu.wpi.first.units.MutableMeasure;
 import edu.wpi.first.units.Velocity;
 import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -103,7 +104,12 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public void setServo(double angle) {
         servoRight.setAngle(angle);
-        servoLeft.setAngle(-angle);
+        servoLeft.setAngle(angle-180);
+    }
+
+    public void setServo(double angle, boolean sync) {
+        servoRight.setAngle(angle);
+        servoLeft.setAngle(angle);
     }
 
     public void setVoltage(double voltage){
