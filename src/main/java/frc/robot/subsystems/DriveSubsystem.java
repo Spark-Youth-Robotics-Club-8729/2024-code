@@ -46,6 +46,7 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Constants.AutoConstants;
@@ -78,7 +79,7 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.kBackRightChassisAngularOffset);
 
   private Vision m_vision = new Vision();
-
+  private final Field2d m_field = new Field2d();
   // The gyro sensor
   public final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
 
@@ -142,8 +143,8 @@ public class DriveSubsystem extends SubsystemBase {
 
         this // Reference to this subsystem to set requirements
     );
-    var stateStdDevs = VecBuilder.fill(0.1, 0.1, 0.1);
-    var visionStdDevs = VecBuilder.fill(1, 1, 1);
+    // var stateStdDevs = VecBuilder.fill(0.1, 0.1, 0.1);
+    // var visionStdDevs = VecBuilder.fill(1, 1, 1);
     m_odometry = new SwerveDrivePoseEstimator(
         DriveConstants.kDriveKinematics,
         Rotation2d.fromDegrees(-m_gyro.getYaw()),
@@ -152,8 +153,9 @@ public class DriveSubsystem extends SubsystemBase {
             m_frontRight.getPosition(),
             m_rearLeft.getPosition(),
             m_rearLeft.getPosition()
-        }, new Pose2d(), stateStdDevs,
-        visionStdDevs);
+        }, new Pose2d());
+
+    SmartDashboard.putData("Field", m_field);
   }
 
   @Override
@@ -177,12 +179,13 @@ public class DriveSubsystem extends SubsystemBase {
           var estStdDevs = m_vision.getEstimationStdDevs(estPose);
 
           m_odometry.addVisionMeasurement(
-              est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+              est.estimatedPose.toPose2d(), est.timestampSeconds);
         });
 
     SmartDashboard.putNumber("Yaw", -m_gyro.getYaw());
     SmartDashboard.putNumber("Pitch", -m_gyro.getPitch());
     SmartDashboard.putNumber("Roll", -m_gyro.getRoll());
+    m_field.setRobotPose(getPose());
     // SmartDashboard.putData("Pose", m_odometry.getEstimatedPosition());
     
     logOutputs();
@@ -316,7 +319,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearLeft.setDesiredState(desiredStates[2]);
     m_rearRight.setDesiredState(desiredStates[3]);
 
-    Logger.recordOutput(getName() + DESIRED_SWERVE_STATE_LOG_PATH, desiredStates);
+    // Logger.recordOutput(getName() + DESIRED_SWERVE_STATE_LOG_PATH, desiredStates);
   }
 
   /** Resets the drive encoders to currently read a position of 0. */
