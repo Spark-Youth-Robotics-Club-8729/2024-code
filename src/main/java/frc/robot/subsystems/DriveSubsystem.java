@@ -179,7 +179,7 @@ public class DriveSubsystem extends SubsystemBase {
           var estStdDevs = m_vision.getEstimationStdDevs(estPose);
 
           m_odometry.addVisionMeasurement(
-              est.estimatedPose.toPose2d(), est.timestampSeconds);
+              est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
         });
 
     SmartDashboard.putNumber("Yaw", -m_gyro.getYaw());
