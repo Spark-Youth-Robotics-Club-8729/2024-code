@@ -283,7 +283,7 @@ public class RobotContainer {
                 m_operatorController.x().whileTrue(new IntakeSetSpin(m_robotIntake, 0.6));
                 m_operatorController.rightBumper().whileTrue(new ShooterSet(m_robotShooter, 0.9, true));
                 m_operatorController.leftBumper().whileTrue(new ShooterSet(m_robotShooter, -0.25, true));
-                m_operatorController.rightTrigger().whileTrue(new ShooterSet(m_robotShooter, 0.17, false));
+                m_operatorController.rightTrigger().whileTrue(new IntakeSetSpin(m_robotIntake, -0.6));
                 m_operatorController.povLeft().whileTrue(m_robotIntake.ampPosition());
                 m_operatorController.y().whileTrue(new IntakeSetRotation(m_robotIntake, 0.5));
                 m_operatorController.a().whileTrue(new IntakeSetRotation(m_robotIntake, -0.5));

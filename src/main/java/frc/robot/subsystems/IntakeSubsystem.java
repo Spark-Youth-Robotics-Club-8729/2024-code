@@ -88,7 +88,7 @@ public class IntakeSubsystem extends SubsystemBase {
         IntakeSpinMotor = new CANSparkMax(IntakeConstants.IntakeSpinMotorCanID, MotorType.kBrushless);
         IntakeRotateMotor = new CANSparkMax(IntakeConstants.IntakeRotateMotorCanID, MotorType.kBrushless);
         IntakeRotateEncoder = IntakeRotateMotor.getEncoder();
-    
+        IntakeSpinMotor.setInverted(true);
         MathUtil.clamp(rotationPID.calculate(IntakeRotateEncoder.getPosition(), IntakeConstants.PIDSetpoint), -0.5,
                 0.5);
 
