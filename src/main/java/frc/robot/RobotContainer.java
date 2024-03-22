@@ -23,6 +23,7 @@ import frc.robot.Constants.ClimbConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ServoSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -74,6 +75,8 @@ public class RobotContainer {
         private final IntakeSubsystem m_robotIntake = new IntakeSubsystem();
         private final ClimbSubsystem m_robotClimb = new ClimbSubsystem();
         private final ShooterSubsystem m_robotShooter = new ShooterSubsystem();
+        private final ServoSubsystem m_robotServo = new ServoSubsystem();
+
 
         private final Field2d field;
 
@@ -283,11 +286,11 @@ public class RobotContainer {
                 m_operatorController.x().whileTrue(new IntakeSetSpin(m_robotIntake, 0.6));
                 m_operatorController.rightBumper().whileTrue(new ShooterSet(m_robotShooter, 0.9, true));
                 m_operatorController.leftBumper().whileTrue(new ShooterSet(m_robotShooter, -0.25, true));
-                m_operatorController.rightTrigger().whileTrue(new IntakeSetSpin(m_robotIntake, -0.6));
-                m_operatorController.povLeft().whileTrue(m_robotIntake.ampPosition());
+                m_operatorController.rightTrigger().whileTrue(new IntakeSetSpin(m_robotIntake, -0.613));
+                // m_operatorController.povLeft().whileTrue(m_robotIntake.ampPosition());
                 m_operatorController.y().whileTrue(new IntakeSetRotation(m_robotIntake, 0.5));
                 m_operatorController.a().whileTrue(new IntakeSetRotation(m_robotIntake, -0.5));
-                m_operatorController.povRight().whileTrue(new ServoSetRotation(m_robotIntake, 180));
+                m_operatorController.povRight().whileTrue(new ServoSetRotation(m_robotServo, 180));
 
                 // new JoystickButton(m_operatorController, 1)
                 // .whileTrue(new IntakeSetRotation(m_robotIntake, 0.5));

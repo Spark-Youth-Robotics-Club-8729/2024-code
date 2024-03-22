@@ -31,8 +31,6 @@ public class IntakeSubsystem extends SubsystemBase {
     CANSparkMax IntakeSpinMotor;
     CANSparkMax IntakeRotateMotor;
     RelativeEncoder IntakeRotateEncoder;
-    Servo servoLeft;
-    Servo servoRight;
 
     // Estimated kG
     // 5.06
@@ -83,8 +81,6 @@ public class IntakeSubsystem extends SubsystemBase {
                     this, "intake rotation"));
 
     public IntakeSubsystem() {
-        servoRight = new Servo(2);
-        servoLeft = new Servo(3);
         IntakeSpinMotor = new CANSparkMax(IntakeConstants.IntakeSpinMotorCanID, MotorType.kBrushless);
         IntakeRotateMotor = new CANSparkMax(IntakeConstants.IntakeRotateMotorCanID, MotorType.kBrushless);
         IntakeRotateEncoder = IntakeRotateMotor.getEncoder();
@@ -100,16 +96,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public void setRotate(double speed) {
         IntakeRotateMotor.set(speed);
-    }
-
-    public void setServo(double angle) {
-        servoRight.setAngle(angle);
-        servoLeft.setAngle(angle-180);
-    }
-
-    public void setServo(double angle, boolean sync) {
-        servoRight.setAngle(angle);
-        servoLeft.setAngle(angle);
     }
 
     public void setVoltage(double voltage){

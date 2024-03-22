@@ -125,8 +125,8 @@ public final class Constants {
     public static final IdleMode kDrivingMotorIdleMode = IdleMode.kBrake;
     public static final IdleMode kTurningMotorIdleMode = IdleMode.kBrake;
 
-    public static final int kDrivingMotorCurrentLimit = 50; // amps
-    public static final int kTurningMotorCurrentLimit = 20; // amps
+    public static final int kDrivingMotorCurrentLimit = 60; // amps
+    public static final int kTurningMotorCurrentLimit = 40; // amps
   }
 
   public static final class OIConstants {
@@ -159,8 +159,8 @@ public final class Constants {
     public static final String kCameraName = "Camera_Module_v3";
     // Cam mounted facing forward, half a meter forward of center, half a meter up
     // from center.
-    public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(-0.34, 0.34, 0.28),
-        new Rotation3d(0, 0, 180));
+    public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(-0.283, -0.29, 0.59),
+        new Rotation3d(0, 57 * Math.PI/180, Math.PI));
 
     // The layout of the AprilTags on the field
     public static final AprilTagFieldLayout kTagLayout = AprilTagFields.kDefaultField.loadAprilTagLayoutField();

@@ -5,18 +5,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ServoSubsystem;
 
 
 public class ServoSetRotation extends Command {
-  private final IntakeSubsystem m_intakesubsystem;
+  private final ServoSubsystem m_servosubsystem;
   private final double m_angle;
 
   /** Creates a new ServoSet. */
-  public ServoSetRotation(IntakeSubsystem intakesubsystem, double angle) {
+  public ServoSetRotation(ServoSubsystem servosubsystem, double angle) {
     m_angle = angle;
-    m_intakesubsystem = intakesubsystem;
-    addRequirements(intakesubsystem);
+    m_servosubsystem = servosubsystem;
+    addRequirements(servosubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -28,13 +28,13 @@ public class ServoSetRotation extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intakesubsystem.setServo(m_angle);
+    m_servosubsystem.setServo(m_angle);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intakesubsystem.setServo(90, true);
+    m_servosubsystem.setServo(90, true);
   }
 
   // Returns true when the command should end.
