@@ -12,12 +12,13 @@
     "FromStage"
   ],
   "autoFolders": [
-    "MidSubAutos",
     "LowerSubAutos",
+    "MidSubAutos",
+    "TestCommands",
     "UpperSubAutos"
   ],
-  "defaultMaxVel": 4.0,
-  "defaultMaxAccel": 4.0,
+  "defaultMaxVel": 3.5,
+  "defaultMaxAccel": 3.5,
   "defaultMaxAngVel": 360.0,
   "defaultMaxAngAccel": 360.0,
   "maxModuleSpeed": 4.1
