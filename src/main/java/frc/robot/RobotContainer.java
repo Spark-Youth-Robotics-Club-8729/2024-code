@@ -342,7 +342,7 @@ public class RobotContainer {
                  * //source* \ /
                  *//////////////////////////////////////////////////////
 
-                m_autoChooser.setDefaultOption("AmpSide: Score preloaded + do nothing",
+                m_autoChooser.addOption("AmpSide: Score preloaded + do nothing",
                                 new PathPlannerAuto("UpperSubScorePreloadOnly"));
                 m_autoChooser.addOption("AmpSide: Close1 + Center2,1", new PathPlannerAuto("UpperSubClose1Center21"));
                 m_autoChooser.addOption("AmpSide: Close1,2 + Center1", new PathPlannerAuto("UpperSubClose12Center1"));
@@ -352,7 +352,7 @@ public class RobotContainer {
                                 new PathPlannerAuto("MidSubScorePreloadOnly"));
                 m_autoChooser.addOption("Center: Close2,3,1 with rotation",
                                 new PathPlannerAuto("MidSubClose231Rotation"));
-                m_autoChooser.addOption("Center: Close2,3,1 no rotation",
+                m_autoChooser.setDefaultOption("Center: Close2,3,1 no rotation",
                                 new PathPlannerAuto("MidSubClose231NoRotation"));
                 m_autoChooser.addOption("Center: Close2,3 + Center 2", new PathPlannerAuto("MidSubClose23Center2"));
                 m_autoChooser.addOption("Center: Close2,3 + Center 1", new PathPlannerAuto("MidSubClose23Center1"));
@@ -371,6 +371,10 @@ public class RobotContainer {
                                 new PathPlannerAuto("LowerSubLongTrollAuto"));
                 m_autoChooser.addOption("Test-Center: Mid + Amp side 3 note auto",
                                 new PathPlannerAuto("MidShotNoteShot"));
+                m_autoChooser.addOption("Test-Command: Auto Rev Shooter", new PathPlannerAuto("AutoRevShooterTest"));
+                m_autoChooser.addOption("Test-Command: Auto Shot", new PathPlannerAuto("AutoShotTest"));
+                m_autoChooser.addOption("Test-Command: Auto Intake", new PathPlannerAuto("AutoIntakeTest"));
+                m_autoChooser.addOption("Test-Command: Auto Rotate", new PathPlannerAuto("AutoRotateTest"));
 
                 // m_autoChooser.addOption("4 Note Auto 1", new PathPlannerAuto("4 Note Auto
                 // 1"));
