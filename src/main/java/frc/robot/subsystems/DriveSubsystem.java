@@ -78,7 +78,7 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.kRearRightTurningCanId,
       DriveConstants.kBackRightChassisAngularOffset);
 
-  private Vision m_vision = new Vision();
+  // private Vision m_vision = new Vision();
   private final Field2d m_field = new Field2d();
   // The gyro sensor
   public final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
@@ -124,7 +124,7 @@ public class DriveSubsystem extends SubsystemBase {
         new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
             new PIDConstants(6, 0.0, 0.0), // Translation PID constants
             new PIDConstants(14, 0.0, 0.0), // Rotation PID constants
-            3.5, // Max module speed, in m/s
+            3, // Max module speed, in m/s
             0.48, // Drive base radius in meters. Distance from robot center to furthest module.
             new ReplanningConfig() // Default path replanning config. See the API for the options here
         ),
@@ -171,16 +171,16 @@ public class DriveSubsystem extends SubsystemBase {
         });
 
     // Correct pose estimate with vision measurements
-    var visionEst = m_vision.getEstimatedGlobalPose();
-    visionEst.ifPresent(
-        est -> {
-          var estPose = est.estimatedPose.toPose2d();
-          // Change our trust in the measurement based on the tags we can see
-          var estStdDevs = m_vision.getEstimationStdDevs(estPose);
+    // var visionEst = m_vision.getEstimatedGlobalPose();
+    // visionEst.ifPresent(
+    //     est -> {
+    //       var estPose = est.estimatedPose.toPose2d();
+    //       // Change our trust in the measurement based on the tags we can see
+    //       var estStdDevs = m_vision.getEstimationStdDevs(estPose);
 
-          m_odometry.addVisionMeasurement(
-              est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
-        });
+    //       m_odometry.addVisionMeasurement(
+    //           est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+    //     });
 
     SmartDashboard.putNumber("Yaw", -m_gyro.getYaw());
     SmartDashboard.putNumber("Pitch", -m_gyro.getPitch());

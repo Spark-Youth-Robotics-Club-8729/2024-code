@@ -283,7 +283,7 @@ public class RobotContainer {
                 m_operatorController.povDown()
                                 .whileTrue(new ClimberSet(m_robotClimb, 0.9));
                 m_operatorController.b().whileTrue(new IntakeSetSpin(m_robotIntake, -0.9));
-                m_operatorController.x().whileTrue(new IntakeSetSpin(m_robotIntake, 0.6));
+                m_operatorController.x().whileTrue(new IntakeSetSpin(m_robotIntake, 0.7));
                 m_operatorController.rightBumper().whileTrue(new ShooterSet(m_robotShooter, 0.9, true));
                 m_operatorController.leftBumper().whileTrue(new ShooterSet(m_robotShooter, -0.25, true));
                 m_operatorController.rightTrigger().whileTrue(new IntakeSetSpin(m_robotIntake, -0.613));
@@ -375,7 +375,8 @@ public class RobotContainer {
                 m_autoChooser.addOption("Test-Command: Auto Shot", new PathPlannerAuto("AutoShotTest"));
                 m_autoChooser.addOption("Test-Command: Auto Intake", new PathPlannerAuto("AutoIntakeTest"));
                 m_autoChooser.addOption("Test-Command: Auto Rotate", new PathPlannerAuto("AutoRotateTest"));
-
+        m_autoChooser.addOption("Troll1",
+                                new PathPlannerAuto("GriefCenterAuto"));
                 // m_autoChooser.addOption("4 Note Auto 1", new PathPlannerAuto("4 Note Auto
                 // 1"));
 

@@ -62,7 +62,7 @@ public class Robot extends LoggedRobot {
     }
 
     // Start logging! No more data receivers, replay sources, or metadata values may be added.
-    Logger.start();
+    //Logger.start();
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard.

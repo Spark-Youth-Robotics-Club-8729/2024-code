@@ -16,7 +16,8 @@ public class AutoRotate extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new IntakeSetRotation(m_robotIntake, 0.7).withTimeout(0.6)
+      new IntakeSetRotation(m_robotIntake, 0.55).withTimeout(0.65),
+      new IntakeSetSpin(m_robotIntake, 0.8).withTimeout(0.5)
     );
   }
 }

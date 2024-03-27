@@ -13,11 +13,11 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class AutoIntake extends SequentialCommandGroup {
   /** Creates a new AutoIntake. */
   public AutoIntake(IntakeSubsystem m_robotIntake) {
-    // Add your commands in the addCommands() call, e.g.
+    // Add your commands in the addCommands() call, w e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new IntakeSetRotation(m_robotIntake, -0.7).withTimeout(0.4),
-      new IntakeSetSpin(m_robotIntake, 0.6)
+      new IntakeSetRotation(m_robotIntake, -0.8).withTimeout(0.6),
+      new IntakeSetSpin(m_robotIntake, 0.8)
     );
   }
 }
